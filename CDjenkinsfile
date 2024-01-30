@@ -2,7 +2,7 @@ def packageName = "app-devops-package-ci.war"
 def artifactname = "app-devops-artifact-ci.jar"
 def version = "1.${BUILD_NUMBER}"
 def semanticVersion = "1.${BUILD_NUMBER}.0"
-def repoName = "2giridharj/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
+def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
 
 pipeline {
 	agent any
@@ -33,6 +33,7 @@ pipeline {
 			    snDevOpsChange(changeRequestDetails: '''
 			    {
 			    "attributes": {
+					"chg_model": {"name": "DevOps"},
 					"requested_by": {
 						"name": "DevOps System"
 					}, //requested_by with name.
