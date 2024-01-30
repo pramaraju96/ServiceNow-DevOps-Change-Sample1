@@ -1,7 +1,7 @@
 def artifactname = "app-devops-artifact-ci.jar"
 def version = "1.${BUILD_NUMBER}"
 def semanticVersion = "1.${BUILD_NUMBER}.0"
-def repoName = "2giridharj/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
+def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
 def releasePipelineName = "DevOps CD Pipeline" //Ensure you enter the correct release pipeline name that you have created in Jenkins
 
 pipeline {
@@ -12,7 +12,7 @@ pipeline {
 	}
 
 	environment {
-		SCANNER_HOME = tool 'sonarScanner'
+		//SCANNER_HOME = tool 'sonarScanner'
 		VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1' //Ensure you update the correct Application name
 		VERACODE_SCANNER_NAME = 'Veracode'
 	} 
@@ -79,11 +79,11 @@ pipeline {
 }
 
 def sonarSummaries() {
-	withSonarQubeEnv(installationName: 'ramasonarcloud'){
+	withSonarQubeEnv(installationName: '<sonar-cloud-installation-name>'){
 		sh 'mvn clean verify sonar:sonar \
-		    -Dsonar.login=1926d793f92181dd0ac406335d4d4bea392a3023 \
+		    -Dsonar.login=abdcefghijklmnopqrstuvwxyz1234567890 \
 		    -Dsonar.host.url=https://sonarcloud.io \
-		    -Dsonar.organization=pramaraju96 \
-		    -Dsonar.projectKey=pramaraju96_DevOps-Test'
+		    -Dsonar.organization=<sonar-cloud-org-name> \
+		    -Dsonar.projectKey=<sonar-cloud-project-key>'
     }
 }
