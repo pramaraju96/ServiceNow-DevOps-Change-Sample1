@@ -2,7 +2,7 @@ def packageName = "app-devops-package-cicd.war"
 def artifactname = "app-devops-artifact-cicd.jar"
 def version = "1.${BUILD_NUMBER}"
 def semanticVersion = "1.${BUILD_NUMBER}.0"
-def repoName = "2giridharj/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
+def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
 
 pipeline {
 	agent any
@@ -63,7 +63,7 @@ pipeline {
 
 		stage('Security Scan') {
 			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
+				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}'
 			}
 		}
 		*/
@@ -93,6 +93,7 @@ pipeline {
 			    snDevOpsChange(changeRequestDetails: '''
 			    {
 			    "attributes": {
+					"chg_model": {"name": "DevOps"},
 					"requested_by": {
 						"name": "DevOps System"
 					}, //requested_by with name.
@@ -104,8 +105,8 @@ pipeline {
 					"priority": "2",
 					"comments": "This is a sample pipeline script to be added in your change step",
 					"work_notes": "Update this to work_notes",
-					"start_date": "2022-01-05 11:59:59", //This is the planned start date.
-					"end_date": "2022-01-08 11:59:59" // This is the planned end date.
+					"start_date": "", //This is the planned start date.
+					"end_date": "" // This is the planned end date.
 				}
 			    }''')
 			}
@@ -120,11 +121,11 @@ pipeline {
 }
 
 def sonarSummaries() {
-	withSonarQubeEnv(installationName: 'ramasonarcloud'){
+	withSonarQubeEnv(installationName: '<sonar-cloud-installation-name>'){
 		sh 'mvn clean verify sonar:sonar \
-		    -Dsonar.login=1926d793f92181dd0ac406335d4d4bea392a3023 \
+		    -Dsonar.login=abdcefghijklmnopqrstuvwxyz1234567890 \
 		    -Dsonar.host.url=https://sonarcloud.io \
-		    -Dsonar.organization=pramaraju96 \
-		    -Dsonar.projectKey=pramaraju96_DevOps-Test'
+		    -Dsonar.organization=<sonar-cloud-org-name> \
+		    -Dsonar.projectKey=<sonar-cloud-project-key>'
     }
 }
