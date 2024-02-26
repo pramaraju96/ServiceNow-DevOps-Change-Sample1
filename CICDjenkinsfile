@@ -54,13 +54,12 @@ pipeline {
 			}     
 		}
 
-		/*
 		stage('Sonar Scan') {
 			steps {
 				sonarSummaries()
 			}
 		}
-
+		/*
 		stage('Security Scan') {
 			steps {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}'
