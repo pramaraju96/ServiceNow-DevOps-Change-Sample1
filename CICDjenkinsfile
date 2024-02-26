@@ -66,7 +66,6 @@ pipeline {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}'
 			}
 		}
-		*/
 
 		stage('Register Package') {
 			steps {
@@ -87,6 +86,7 @@ pipeline {
 				}""")
 			}
 		}
+		*/
 		  
 		stage('Change') {
 			steps {
