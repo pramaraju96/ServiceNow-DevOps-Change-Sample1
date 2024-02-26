@@ -1,0 +1,26 @@
+# Matrix pipeline
+
+# Only run against master
+trigger:
+- master
+
+# Don't run against PRs
+pr: none
+
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-16.04'
+    mac:
+      imageName: 'macos-10.13'
+    windows:
+      imageName: 'vs2017-win2016'
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+- script: echo Running $(imageName)
