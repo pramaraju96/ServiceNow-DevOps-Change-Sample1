@@ -53,13 +53,14 @@ pipeline {
 				}""")
 			}     
 		}
-		/*
+		
 		stage('Sonar Scan') {
 			steps {
 				sonarSummaries()
 			}
 		}
-		
+
+		/*
 		stage('Security Scan') {
 			steps {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}'
@@ -120,7 +121,7 @@ pipeline {
 }
 
 def sonarSummaries() {
-	withSonarQubeEnv(installationName: '<sonar-cloud-installation-name>'){
+	withSonarQubeEnv(installationName: 'ramasonarcloud'){
 		sh 'mvn clean verify sonar:sonar \
 		    -Dsonar.login=abdcefghijklmnopqrstuvwxyz1234567890 \
 		    -Dsonar.host.url=https://sonarcloud.io \
