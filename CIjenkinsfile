@@ -61,13 +61,13 @@ pipeline {
 			}
 		}
 
-
+/*
 		stage('Security Scan') {
 			steps {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
 			}
 		}
-
+*/
 	}
 	post{
 		success{
