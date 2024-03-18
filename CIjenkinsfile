@@ -12,7 +12,7 @@ pipeline {
 	}
 
 	environment {
-		//SCANNER_HOME = tool 'sonarScanner'
+		SCANNER_HOME = tool 'ramasonarcloud'
 		VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1' //Ensure you update the correct Application name
 		VERACODE_SCANNER_NAME = 'Veracode'
 	} 
@@ -54,19 +54,20 @@ pipeline {
 			}     
 		}
 
-		/*
+
 		stage('Sonar Scan') {
 			steps {
 				sonarSummaries()
 			}
 		}
 
+
 		stage('Security Scan') {
 			steps {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
 			}
 		}
-		*/
+
 	}
 	post{
 		success{
@@ -79,11 +80,11 @@ pipeline {
 }
 
 def sonarSummaries() {
-	withSonarQubeEnv(installationName: '<sonar-cloud-installation-name>'){
+	withSonarQubeEnv(installationName: 'ramasonarcloud'){
 		sh 'mvn clean verify sonar:sonar \
-		    -Dsonar.login=abdcefghijklmnopqrstuvwxyz1234567890 \
+		    -Dsonar.login=1926d793f92181dd0ac406335d4d4bea392a3023 \
 		    -Dsonar.host.url=https://sonarcloud.io \
-		    -Dsonar.organization=<sonar-cloud-org-name> \
-		    -Dsonar.projectKey=<sonar-cloud-project-key>'
+		    -Dsonar.organization=pramaraju96 \
+		    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample'
     }
 }
