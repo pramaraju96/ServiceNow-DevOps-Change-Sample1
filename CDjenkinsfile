@@ -17,6 +17,7 @@ pipeline {
 			steps {
 				snDevOpsPackage(
 					name: "${packageName}",
+					configurationName: "DevOps-checkmarx02.service-now.com-1710737267460"
 					artifactsPayload: """
 					{
 					    "artifacts":
@@ -29,7 +30,7 @@ pipeline {
 					        }
 					    ],
 					    "branchName": "main"
-				}"""), configurationName: DevOps-checkmarx02.service-now.com-1710737267460
+				}""")
 			}
 		}
 */		  
@@ -38,6 +39,7 @@ pipeline {
 			    sleep(60);
 			    snDevOpsChange(changeRequestDetails: '''
 			    {
+			    configurationName: "DevOps-checkmarx02.service-now.com-1710737267460",
 			    "attributes": {
 					"chg_model": {"name": "DevOps"},
 					"requested_by": {
@@ -54,7 +56,7 @@ pipeline {
 					"start_date": "2022-01-05 11:59:59", //This is the planned start date.
 					"end_date": "2022-01-08 11:59:59" // This is the planned end date.
 				}
-			    }'''), configurationName: DevOps-checkmarx02.service-now.com-1710737267460
+			    }''')
 			}
 		}
 
