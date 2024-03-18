@@ -4,6 +4,8 @@ def semanticVersion = "1.${BUILD_NUMBER}.0"
 def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
 def releasePipelineName = "DevOps CD Pipeline" //Ensure you enter the correct release pipeline name that you have created in Jenkins
 
+def packageName = "app-devops-package-ci.war"
+
 pipeline {
 	agent any
 	
