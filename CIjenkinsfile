@@ -68,6 +68,25 @@ pipeline {
 			}
 		}
 */
+		stage('Register Package') {
+			steps {
+				snDevOpsPackage(
+					name: "${packageName}",
+					artifactsPayload: """
+					{
+					    "artifacts":
+					    [
+					        {
+					            "name": "${artifactname}",
+					            "version": "${version}",
+					            "semanticVersion": "${semanticVersion}",
+					            "repositoryName": "${repoName}"
+					        }
+					    ],
+					    "branchName": "main"
+				}""")
+			}
+		}
 	}
 	post{
 		success{
