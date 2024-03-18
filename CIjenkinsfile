@@ -40,7 +40,9 @@ pipeline {
 
 		stage('Register Artifact') {
 			steps {
-				snDevOpsArtifact(artifactsPayload: """
+				snDevOpsArtifact(
+				configurationName: "DevOps-checkmarx02.service-now.com-1710737267460",
+				artifactsPayload: """
 				{
 				"artifacts":
 				[
@@ -52,7 +54,7 @@ pipeline {
 				    }
 				],
 				"branchName": "main"
-				}""")', configurationName: DevOps-checkmarx02.service-now.com-1710737267460
+				}""")'
 			}     
 		}
 
@@ -73,6 +75,7 @@ pipeline {
 		stage('Register Package') {
 			steps {
 				snDevOpsPackage(
+					configurationName: "DevOps-checkmarx02.service-now.com-1710737267460",
 					name: "${packageName}",
 					artifactsPayload: """
 					{
@@ -86,7 +89,7 @@ pipeline {
 					        }
 					    ],
 					    "branchName": "main"
-				}"""), configurationName: DevOps-checkmarx02.service-now.com-1710737267460
+				}""")
 			}
 		}
 	}
