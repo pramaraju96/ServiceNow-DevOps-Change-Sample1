@@ -8,6 +8,7 @@ pipeline {
 	agent any
 
 	stages {
+/*
 		stage('Register Package') {
 			steps {
 				snDevOpsPackage(
@@ -27,9 +28,10 @@ pipeline {
 				}""")
 			}
 		}
-		  
+*/		  
 		stage('Change') {
 			steps {
+			    sleep(60);
 			    snDevOpsChange(changeRequestDetails: '''
 			    {
 			    "attributes": {
