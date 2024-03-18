@@ -1,11 +1,15 @@
 def packageName = "app-devops-package-ci.war"
 def artifactname = "app-devops-artifact-ci.jar"
-def version = "1.${BUILD_NUMBER}"
-def semanticVersion = "1.${BUILD_NUMBER}.0"
+def version = "1.${params.BUILD_NUMBER}"
+def semanticVersion = "1.${params.BUILD_NUMBER}.0"
 def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
 
 pipeline {
 	agent any
+
+    parameters {
+	string(name: 'BUILD_NUMBER', defaultValue: '', description: 'The build number from CI job')
+    }
 
 	stages {
 /*
