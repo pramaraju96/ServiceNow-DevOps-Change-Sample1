@@ -94,7 +94,7 @@ pipeline {
 		success{
 			script{
 				echo "${releasePipelineName}"
-				build job: "${releasePipelineName}"
+				build job: "${releasePipelineName}", parameters: [[$class: 'StringParameterValue', name: 'BUILD_NUMBER', value: env.BUILD_NUMBER]]
 			}
 		}
 	}
