@@ -40,6 +40,8 @@ pipeline {
 
 		stage('Register Artifact') {
 			steps {
+				echo "RR version -> ${version}"
+				echo "RR semanticVersion -> ${semanticVersion}"
 				snDevOpsArtifact(
 				configurationName: "DevOps-checkmarx02.service-now.com-1710737267460",
 				artifactsPayload: """
@@ -71,7 +73,7 @@ pipeline {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
 			}
 		}
-*/
+
 		stage('Register Package') {
 			steps {
 				snDevOpsPackage(
@@ -92,6 +94,7 @@ pipeline {
 				}""")
 			}
 		}
+*/
 	}
 	post{
 		success{
