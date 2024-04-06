@@ -199,9 +199,9 @@ jobs:
     # type of machine to run the job on
     runs-on: ubuntu-latest
     name: 'ServiceNow DevOps Change Automation'
-    id: create_change
     steps:
       - name: ServiceNow Change
+        id: create_change
         uses: ServiceNow/servicenow-devops-change@dev
         with:
           # Devops Integration Token
