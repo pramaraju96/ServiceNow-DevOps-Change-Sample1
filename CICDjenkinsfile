@@ -38,7 +38,9 @@ pipeline {
 
 		stage('Register Artifact') {
 			steps {
-				snDevOpsArtifact(artifactsPayload: """
+				snDevOpsArtifact(
+				configurationName:"DevOps-checkmarx02.service-now.com-1712660163315",
+				artifactsPayload: """
 				{
 				"artifacts":
 				[
@@ -64,19 +66,20 @@ pipeline {
 
 		stage('Security Scan - Veracode') {
 			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
+				snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}')
 			}
 		}
 
 		stage('Security Scan - Checkmarx SAST') {
 			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}'
+				snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}')
 			}
 		}
 
 		stage('Register Package') {
 			steps {
 				snDevOpsPackage(
+				configurationName:"DevOps-checkmarx02.service-now.com-1712660163315",
 				name: "${packageName}",
 				artifactsPayload: """
 				{
@@ -97,7 +100,9 @@ pipeline {
 		  
 		stage('Change') {
 			steps {
-			    snDevOpsChange(changeRequestDetails: '''
+			    snDevOpsChange(
+				configurationName:"DevOps-checkmarx02.service-now.com-1712660163315",
+				changeRequestDetails: '''
 			    {
 			    "attributes": {
 					"chg_model": {"name": "DevOps"},
