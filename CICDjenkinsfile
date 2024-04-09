@@ -137,10 +137,11 @@ pipeline {
 def sonarSummaries() {
 	withSonarQubeEnv(installationName: 'sonarcloud.io'){
 		sh 'mvn clean verify sonar:sonar \
+		-Dsonar.branch=test1
 		    -Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
 		    -Dsonar.host.url=https://sonarcloud.io \
 		    -Dsonar.organization=pramaraju96 \
-		    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2' \
-		    -Dsonar.branch=test1
+		    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2'
+		    
     }
 }
