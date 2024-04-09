@@ -68,13 +68,14 @@ pipeline {
 			steps {
 				echo "${env.VERACODE_APPLICATION_NAME}"
 				echo "${VERACODE_APPLICATION_NAME}"
-				snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}')
+				snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Veracode", "applicationName": ${VERACODE_APPLICATION_NAME}}')
 			}
 		}
 
 		stage('Security Scan - Checkmarx SAST') {
 			steps {
-				//snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}')
+				snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}')
+/*
 				step([$class: 'CxScanBuilder', comment: '', configAsCode: true, credentialsId: 'CxSAST', customFields: '', excludeFolders: '', exclusionsSetting: 'global', failBuildOnNewResults: false, failBuildOnNewSeverity: 'HIGH', filterPattern: '''!**/_cvs/**/*, !**/.svn/**/*, !**/.hg/**/*, !**/.git/**/*, !**/.bzr/**/*,
         !**/.gitgnore/**/*, !**/.gradle/**/*, !**/.checkstyle/**/*, !**/.classpath/**/*, !**/bin/**/*,
         !**/obj/**/*, !**/backup/**/*, !**/.idea/**/*, !**/*.DS_Store, !**/*.ipr, !**/*.iws,
@@ -89,6 +90,7 @@ pipeline {
         !**/*.bin,!**/*.lock,!**/*.svg,!**/*.obj,
         !**/*.stml, !**/*.ttml, !**/*.txn, !**/*.xhtm, !**/*.xhtml, !**/*.class, !**/*.iml, !Checkmarx/Reports/*.*,
         !OSADependencies.json, !**/node_modules/**/*, !**/.cxsca-results.json, !**/.cxsca-sast-results.json, !.checkmarx/cx.config''', fullScanCycle: 10, groupId: '18', password: '{AQAAABAAAAAQmTwzBy8jDgGRtJI6Ag/gk1fY2qSIimPW3hdi2tdER2Y=}', preset: '0', projectLevelCustomFields: '', projectName: 'Rama GitHub Project', sastEnabled: true, scaReportFormat: 'PDF', serverUrl: 'https://partners9x.checkmarx.net', sourceEncoding: '1', useOwnServerCredentials: true, username: '', vulnerabilityThresholdResult: 'FAILURE', waitForResultsEnabled: true])
+*/
 			}
 		}
 
