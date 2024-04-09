@@ -68,7 +68,7 @@ pipeline {
 			steps {
 				echo "${env.VERACODE_APPLICATION_NAME}"
 				echo "${VERACODE_APPLICATION_NAME}"
-				snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Veracode", "applicationName": ${VERACODE_APPLICATION_NAME}}')
+				snDevOpsSecurityResult(configurationName:"DevOps-checkmarx02.service-now.com-1712660163315", securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${VERACODE_APPLICATION_NAME}"}')
 			}
 		}
 
