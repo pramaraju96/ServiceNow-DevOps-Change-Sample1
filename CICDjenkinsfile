@@ -35,7 +35,7 @@ pipeline {
 				}
 			}
 		}
-		/*
+
 		stage('Register Artifact') {
 			steps {
 				snDevOpsArtifact(artifactsPayload: """
@@ -53,7 +53,7 @@ pipeline {
 				}""")
 			}     
 		}
-		*/
+
 		
 		stage('Sonar Scan') {
 			steps {
@@ -61,10 +61,16 @@ pipeline {
 			}
 		}
 
-		/*
-		stage('Security Scan') {
+
+		stage('Security Scan - Veracode') {
 			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}'
+				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
+			}
+		}
+
+		stage('Security Scan - Checkmarx SAST') {
+			steps {
+				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}'
 			}
 		}
 
@@ -87,7 +93,7 @@ pipeline {
 				}""")
 			}
 		}
-		*/
+
 		  
 		stage('Change') {
 			steps {
@@ -122,11 +128,11 @@ pipeline {
 }
 
 def sonarSummaries() {
-	withSonarQubeEnv(installationName: 'ramasonarcloud'){
+	withSonarQubeEnv(installationName: 'sonarcloud.io'){
 		sh 'mvn clean verify sonar:sonar \
-		    -Dsonar.login=abdcefghijklmnopqrstuvwxyz1234567890 \
+		    -Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
 		    -Dsonar.host.url=https://sonarcloud.io \
-		    -Dsonar.organization=<sonar-cloud-org-name> \
-		    -Dsonar.projectKey=<sonar-cloud-project-key>'
+		    -Dsonar.organization=pramaraju96 \
+		    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2'
     }
 }
