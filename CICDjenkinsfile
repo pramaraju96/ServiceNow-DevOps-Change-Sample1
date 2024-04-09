@@ -141,6 +141,6 @@ def sonarSummaries() {
 		    -Dsonar.host.url=https://sonarcloud.io \
 		    -Dsonar.organization=pramaraju96 \
 		    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2' \
-		    -Dsonar.branch.name=test1
+		    -Dsonar.branch=test1
     }
 }
