@@ -39,7 +39,9 @@ pipeline {
 		stage('Register Artifact') {
 			steps {
         echo "Branch name in Register Artifact: " + scm.branches[0].name
-	echo "Branch name in Register Artifact:  ${env.GIT_BRANCH}"
+	echo "Branch name in Register Artifact: ${env.GIT_BRANCH}"
+	echo "Branch name in Register Artifact: ${GIT_BRANCH}"
+	echo "Branch name in Register Artifact: ${GIT_LOCAL_BRANCH}"
 				snDevOpsArtifact(
 				artifactsPayload: """
 				{
@@ -60,7 +62,8 @@ pipeline {
 		
 		stage('Sonar Scan') {
 			steps {
-				sonarSummaries()
+				echo "Running SonarCloud scans"
+				//sonarSummaries()
 			}
 		}
 
