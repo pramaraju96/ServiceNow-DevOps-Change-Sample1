@@ -38,7 +38,7 @@ pipeline {
 
 		stage('Register Artifact') {
 			steps {
-        echo "Branch name in Register Artifact:  ${env.BRANCH_NAME}"
+        echo "Branch name in Register Artifact:  scm.branches[0].name"
 				snDevOpsArtifact(
 				artifactsPayload: """
 				{
@@ -80,7 +80,7 @@ pipeline {
 */
 		stage('Register Package') {
 			steps {
-        echo "Branch name in Register Package:  ${env.BRANCH_NAME}"
+        echo "Branch name in Register Package:  scm.branches[0].name"
 				snDevOpsPackage(
 				name: "${packageName}",
 				artifactsPayload: """
