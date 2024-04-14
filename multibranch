@@ -40,8 +40,9 @@ pipeline {
 			steps {
         echo "Branch name in Register Artifact: " + scm.branches[0].name
 	echo "Branch name in Register Artifact: ${env.GIT_BRANCH}"
-	echo "Branch name in Register Artifact, GIT_BRANCH: ${GIT_BRANCH}"
 	echo "Branch name in Register Artifact, GIT_LOCAL_BRANCH: ${GIT_LOCAL_BRANCH}"
+	echo "Branch name in Register Artifact, GIT_BRANCH: ${GIT_BRANCH}"
+
 				snDevOpsArtifact(
 				artifactsPayload: """
 				{
