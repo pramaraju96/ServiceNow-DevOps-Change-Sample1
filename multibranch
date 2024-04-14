@@ -42,6 +42,7 @@ pipeline {
 	echo "Branch name in Register Artifact: ${env.GIT_BRANCH}"
 	echo "Branch name in Register Artifact, GIT_BRANCH: ${GIT_BRANCH}.split('/')[1]"
 	echo "Url of the repository: " + scm.getUserRemoteConfigs()[0].getUrl()
+	echo "Url of the repository: ${GIT_URL}"
 
 				snDevOpsArtifact(
 				artifactsPayload: """
