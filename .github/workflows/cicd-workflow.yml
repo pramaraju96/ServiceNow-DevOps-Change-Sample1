@@ -226,10 +226,66 @@ jobs:
         run: |
           echo 'Output of ServiceNow DevOps Change Automation is change-request-number = ${{ steps.create_change.outputs.change-request-number }}' >> $GITHUB_OUTPUT
           echo 'Output of ServiceNow DevOps Change Automation is change-request-sys-id = ${{ steps.create_change.outputs.change-request-sys-id }}' >> $GITHUB_OUTPUT          
+
+  getChange:
+    # jobs that must complete successfully before this job will run
+    needs: change
+    # type of machine to run the job on
+    runs-on: ubuntu-latest
+    name: 'ServiceNow DevOps Get Change'
+    steps:
+      - name: ServiceNow DevOps Get Change
+        # You may pin to the exact commit or the version.
+        # uses: ServiceNow/servicenow-devops-get-change@38d27ed6413d88e7b7fa9a7db248a2caaaf09596
+        uses: ServiceNow/servicenow-devops-get-change@v3.1.0
+        with:
+          # ServiceNow Instance URL
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          # # Devops Integration User Name
+          # devops-integration-user-name: # optional
+          # # Devops Integration User Password
+          # devops-integration-user-password: ${{ secrets.SN_DEVOPS_TOKEN }}
+          # Devops Integration Token
+          devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+          # Orchestration Tool Id
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          # Github Context
+          context-github: ${{ toJSON(github) }}
+          # The inputs to identify change at Servicenow and GET it.
+          change-details: '{"build_number":"${{ github.run_number }}","pipeline_name":"${{ github.workflow }}","stage_name":"ServiceNow DevOps Change Automation"}'
           
+  updateChange:
+    # jobs that must complete successfully before this job will run
+    needs: change
+    # type of machine to run the job on
+    runs-on: ubuntu-latest
+    name: 'ServiceNow DevOps Update Change'
+    steps:
+      - name: ServiceNow DevOps Update Change
+        # You may pin to the exact commit or the version.
+        # uses: ServiceNow/servicenow-devops-update-change@d7abfe557487fe1122e138eab6dae709df1e7780
+        uses: ServiceNow/servicenow-devops-update-change@v3.1.0
+        with:
+          # ServiceNow Instance URL
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          # ServiceNow Devops security token
+          devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+          # Orchestration Tool Id of the tool created in ServiceNow
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          # # Devops Integration User Name
+          # devops-integration-user-name: # optional
+          # # Devops Integration User Password
+          # devops-integration-user-password: # optional
+          # Github Context
+          context-github: ${{ toJSON(github) }}
+          # Change Request Number to be Updated
+          change-request-number: ${{ steps.create_change.outputs.change-request-number }}
+          # The customized inputs to create change with the requested details.
+          change-request-details: '{ "short_description":"Updated short_description abcdefghijklmnopqrstuvwxyz" }'
+
   deploy:
     name: 'Deploy'
-    needs: change
+    needs: updateChange
     runs-on: ubuntu-latest
     steps:
     - name: Run deployment scripts
