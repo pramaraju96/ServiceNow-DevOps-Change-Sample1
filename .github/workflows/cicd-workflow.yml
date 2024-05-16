@@ -252,7 +252,7 @@ jobs:
           # Github Context
           context-github: ${{ toJSON(github) }}
           # The inputs to identify change at Servicenow and GET it.
-          change-details: '{"build_number":"${{ github.run_number }}","pipeline_name":"${{ github.workflow }}","stage_name":"ServiceNow DevOps Change Automation"}'
+          change-details: '{"build_number":"${{ github.run_id }}","pipeline_name":"${{ github.workflow }}","stage_name":"ServiceNow DevOps Change Automation"}'
           
   updateChange:
     # jobs that must complete successfully before this job will run
