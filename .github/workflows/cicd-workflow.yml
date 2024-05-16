@@ -202,7 +202,7 @@ jobs:
     steps:
       - name: ServiceNow Change
         id: create_change
-        uses: ServiceNow/servicenow-devops-change@dev
+        uses: ServiceNow/servicenow-devops-change@v4.0.0
         with:
           # Devops Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
@@ -215,7 +215,7 @@ jobs:
           # Display Name of the Job
           job-name: 'ServiceNow DevOps Change Automation'
           #change-request: '{"attributes":{"chg_model":{"name":"DevOps"}, "service_offering": "e94c535c87298610597bca26cebb35f5", "requested_by":{"name": "DevOps System"},"assignment_group":{"name": "Change management"},"priority": "2","comments": "This is a sample pipeline script to be added in your change step","work_notes": "Update this to work_notes","start_date": "","end_date": ""}}'
-          change-request: '{"attributes":{"chg_model":{"name":"DevOp"}}}'
+          change-request: '{"attributes":{"chg_model":{"name":"DevOps"}}}'
           # You can specify the requested_by attribute either with name or sys_id. Example: "requested_by":{"name": "Test User"} or "requested_by": "62826bf03710200044e0bfc8bcbe5df1"
           # You can specify the assignment_group attribute either with name or sys_id. Example: "assignment_group":{"name": "Change Approval Team"} or "assignment_group": "5f721d93c0a8010e015533746de18bf9"
           # start_date: Enter the planned start date
