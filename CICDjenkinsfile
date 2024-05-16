@@ -105,7 +105,7 @@ pipeline {
 				changeRequestDetails: '''
 			    {
 			    "attributes": {
-					"chg_model": {"name": "DevOps"},
+					"chg_model": {"name": "Emergency"},
 					"requested_by": {
 						"name": "DevOps System"
 					}, //requested_by with name.
