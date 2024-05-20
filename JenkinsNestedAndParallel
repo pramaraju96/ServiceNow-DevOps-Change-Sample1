@@ -60,11 +60,13 @@ pipeline {
 								junit "**/target/surefire-reports/*.xml"
 								sleep 15
 							}
+/*
 							post {
 								always {
 									junit "**/target/surefire-reports/*.xml"
 								}
 							}
+*/
 						}
 						stage("Deploy1") {
 							steps {
