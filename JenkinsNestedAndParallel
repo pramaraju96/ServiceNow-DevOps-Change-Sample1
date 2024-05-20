@@ -61,8 +61,7 @@ pipeline {
 								sleep 15
 							}
 							post {
-								success {
-									echo 'Test1-success'
+								always {
 									junit "**/target/surefire-reports/*.xml"
 								}
 							}
