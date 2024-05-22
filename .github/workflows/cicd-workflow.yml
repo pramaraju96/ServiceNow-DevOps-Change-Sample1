@@ -199,9 +199,9 @@ jobs:
       with:
           environment: PROD
       needs: registerPackage
-      steps:
-          - name: Run deployment scripts
-            run: echo Completed running deployment script          
+      # steps:
+      #     - name: Run deployment scripts
+      #       run: echo Completed running deployment script          
   # change:
   #     # jobs that must complete successfully before this job will run
   #     needs: registerPackage
