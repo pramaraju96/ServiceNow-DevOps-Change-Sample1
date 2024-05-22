@@ -199,7 +199,6 @@ jobs:
       with:
           environment: PROD
       needs: registerPackage
-      runs-on: ubuntu-latest
       steps:
           - name: Run deployment scripts
             run: echo Completed running deployment script          
