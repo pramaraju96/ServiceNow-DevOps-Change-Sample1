@@ -192,21 +192,31 @@ jobs:
           package-name: 'app-devops-change-velocity-cicd.war'
           # Display Name of Job
           job-name: 'Register Package'
-          
-  change:
-      # jobs that must complete successfully before this job will run
-      needs: registerPackage
-      # type of machine to run the job on
-      runs-on: ubuntu-latest
-      name: 'ServiceNow DevOps Change Automation'
-      
-      # environment change start here
+
+  deploy:
+      #if: github.event.pull_request.merged == true
+      name: Deploy
       with:
           environment: PROD
+      needs: registerPackage
+      runs-on: ubuntu-latest
       steps:
           - name: Run deployment scripts
-            run: echo Completed running deployment script
-      # environment change end here
+            run: echo Completed running deployment script          
+  # change:
+  #     # jobs that must complete successfully before this job will run
+  #     needs: registerPackage
+  #     # type of machine to run the job on
+  #     runs-on: ubuntu-latest
+  #     name: 'ServiceNow DevOps Change Automation'
+      
+  #     # environment change start here
+  #     with:
+  #         environment: PROD
+  #     steps:
+  #         - name: Run deployment scripts
+  #           run: echo Completed running deployment script
+  #     # environment change end here
     
     # steps:
     #   - name: ServiceNow Change
