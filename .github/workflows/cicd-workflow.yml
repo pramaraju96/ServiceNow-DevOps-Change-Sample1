@@ -91,15 +91,15 @@ jobs:
               }
           ]'
 
-  sonarScan:
-    name: 'Sonar Scan'
-    needs: registerArtifact
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.0.0
-      with:
-        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+  # sonarScan:
+  #   name: 'Sonar Scan'
+  #   needs: registerArtifact
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4.0.0
+  #     with:
+  #       fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
     # - name: Set up JDK 17
     #   uses: actions/setup-java@v3
     #   with:
@@ -124,28 +124,28 @@ jobs:
     #   run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
 
     
-    - name: ServiceNow DevOps Sonar Scan Results
-    # You may pin to the exact commit or the version.     
-      uses: ServiceNow/servicenow-devops-sonar@v3.1.0
-      with:
-          # ServiceNow Instance URL
-          instance-url: ${{ secrets.SN_INSTANCE_URL }}
-          # Devops Integration Token
-          devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
-          # Orchestration Tool Id
-          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
-          # Github Context
-          context-github: ${{ toJSON(github) }}
-          # Display Name of the Job
-          job-name: 'Sonar Scan'
-          # Sonar Host URL
-          sonar-host-url: ${{ secrets.SONAR_URL }}
-          # Sonar Project Key
-          sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }}
+    # - name: ServiceNow DevOps Sonar Scan Results
+    # # You may pin to the exact commit or the version.     
+    #   uses: ServiceNow/servicenow-devops-sonar@v3.1.0
+    #   with:
+    #       # ServiceNow Instance URL
+    #       instance-url: ${{ secrets.SN_INSTANCE_URL }}
+    #       # Devops Integration Token
+    #       devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+    #       # Orchestration Tool Id
+    #       tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+    #       # Github Context
+    #       context-github: ${{ toJSON(github) }}
+    #       # Display Name of the Job
+    #       job-name: 'Sonar Scan'
+    #       # Sonar Host URL
+    #       sonar-host-url: ${{ secrets.SONAR_URL }}
+    #       # Sonar Project Key
+    #       sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }}
 
   ServiceNowSecurityScanResultsVeracode:
       # jobs that must complete successfully before this job will run
-      needs: sonarScan
+      needs: registerArtifact
       # type of machine to run the job on
       runs-on: ubuntu-latest
       name: ServiceNow Security Scan Results
