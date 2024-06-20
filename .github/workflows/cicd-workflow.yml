@@ -349,7 +349,8 @@ jobs:
           # Github Context
           context-github: ${{ toJSON(github) }}
           # The inputs to identify change at Servicenow and GET it.
-          change-details: '{"build_number":"${{ github.run_id }}","pipeline_name":"${{ github.repository }}/${{ github.workflow }}","stage_name":"ServiceNow DevOps Change Automation", "attempt_number": ""}'
+          #change-details: '{"build_number":"${{ github.run_id }}","pipeline_name":"${{ github.repository }}/${{ github.workflow }}","stage_name":"ServiceNow DevOps Change Automation", "attempt_number": ""}'
+          change-details: '{"build_number":"","pipeline_name":"${{ github.repository }}/${{ github.workflow }}","stage_name":"", "attempt_number": ""}'
 
       - name: Sleep for 60 seconds
         uses: jakejarvis/wait-action@master
