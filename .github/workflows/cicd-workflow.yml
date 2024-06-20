@@ -314,7 +314,12 @@ jobs:
       - name: Output of ServiceNow DevOps Change Automation
         run: |
           echo 'Output of ServiceNow DevOps Change Automation is change-request-number = ${{ steps.create_change.outputs.change-request-number }}' >> $GITHUB_OUTPUT
-          echo 'Output of ServiceNow DevOps Change Automation is change-request-sys-id = ${{ steps.create_change.outputs.change-request-sys-id }}' >> $GITHUB_OUTPUT          
+          echo 'Output of ServiceNow DevOps Change Automation is change-request-sys-id = ${{ steps.create_change.outputs.change-request-sys-id }}' >> $GITHUB_OUTPUT   
+
+      - name: Sleep for 60 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '60s'          
 
   getChange:
     # jobs that must complete successfully before this job will run
@@ -346,6 +351,11 @@ jobs:
           # The inputs to identify change at Servicenow and GET it.
           change-details: '{"build_number":"${{ github.run_id }}","pipeline_name":"${{ github.repository }}/${{ github.workflow }}","stage_name":"ServiceNow DevOps Change Automation", "attempt_number": ""}'
 
+      - name: Sleep for 60 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '60s'
+        
       - name: Output of ServiceNow DevOps Get Change
         run: |
           echo 'Output of ServiceNow DevOps Get Change Automation is change-request-number = ${{ steps.get_change.outputs.change-request-number }}' >> $GITHUB_OUTPUT           
