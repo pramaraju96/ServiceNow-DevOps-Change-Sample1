@@ -105,7 +105,7 @@ pipeline {
 								sleep 5
 								junit "**/target/surefire-reports/*.xml"
 								sleep 15
-								snDevOpsChange()
+								//snDevOpsChange()
 								//sonarSummaries()
 							}
 							post {
