@@ -291,7 +291,7 @@ jobs:
     steps:
       - name: ServiceNow Change
         id: create_change
-        uses: ServiceNow/servicenow-devops-change@v4.0.0
+        uses: ServiceNow/servicenow-devops-change@dev
         with:
           # Devops Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
@@ -310,6 +310,9 @@ jobs:
           # start_date: Enter the planned start date
           # end_date: Enter the planned end date
           abortOnChangeCreationFailure: false
+          timeout: 3600
+          interval: 100
+          changeCreationTimeOut: 3600
 
       - name: Output of ServiceNow DevOps Change Automation
         run: |
