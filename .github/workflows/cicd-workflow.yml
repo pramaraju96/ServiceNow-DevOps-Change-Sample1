@@ -312,7 +312,7 @@ jobs:
           deployment-gate: '{"environment":"env_deployment_gates","jobName":"ServiceNow DevOps Get Change"}'
           abortOnChangeCreationFailure: false
           interval: 100
-          timeout: 3600
+          timeout: 250
           changeCreationTimeOut: 250
 
       - name: Output of ServiceNow DevOps Change Automation
