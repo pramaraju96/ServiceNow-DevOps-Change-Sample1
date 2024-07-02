@@ -313,7 +313,7 @@ jobs:
           abortOnChangeCreationFailure: false
           interval: 100
           timeout: 75
-          changeCreationTimeOut: 3600
+          changeCreationTimeOut: 75
 
       - name: Output of ServiceNow DevOps Change Automation
         run: |
