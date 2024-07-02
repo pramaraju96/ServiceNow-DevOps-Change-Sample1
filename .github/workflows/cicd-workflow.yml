@@ -311,7 +311,7 @@ jobs:
           # end_date: Enter the planned end date
           abortOnChangeCreationFailure: false
           interval: 100
-          timeout: 3600
+          timeout: 250
           changeCreationTimeOut: 3600
 
       - name: Output of ServiceNow DevOps Change Automation
