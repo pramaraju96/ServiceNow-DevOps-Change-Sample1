@@ -46,7 +46,7 @@ pipeline {
 				echo "RR version -> ${version}"
 				echo "RR semanticVersion -> ${semanticVersion}"
 				snDevOpsArtifact(
-				configurationName: "DevOps-checkmarx02.service-now.com-1710737267460",
+				configurationName: "DevOps-checkmarx05.service-now.com-1720680378716",
 				artifactsPayload: """
 				{
 				"artifacts":
@@ -99,7 +99,7 @@ pipeline {
 		stage('Register Package') {
 			steps {
 				snDevOpsPackage(
-					configurationName: "DevOps-checkmarx02.service-now.com-1710737267460",
+					configurationName: "DevOps-checkmarx05.service-now.com-1720680378716",
 					name: "${packageName}",
 					artifactsPayload: """
 					{
