@@ -7,45 +7,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  ServiceNowSecurityScanResultsVeracode:
-      # jobs that must complete successfully before this job will run
-      # type of machine to run the job on
-      runs-on: ubuntu-latest
-      name: ServiceNow Security Scan Results
-      steps:
-        - name: ServiceNow DevOps Security Results
-          uses: ServiceNow/servicenow-devops-security-result@v3.1.0
-          with:
-              # Devops Integration User Name
-              devops-integration-user-name: ${{ secrets.SN_DEVOPS_USER }}
-              # Devops Integration User Password
-              devops-integration-user-password: ${{ secrets.SN_DEVOPS_PASSWORD }}
-              # Devops Integration Token
-              devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
-              # ServiceNow Instance URL
-              instance-url: ${{ secrets.SN_INSTANCE_URL }}
-              # Orchestration Tool Id
-              tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
-              # GitHub Context
-              context-github: ${{ toJSON(github) }}
-              # Display Name of the Job
-              job-name: 'ServiceNow Security Scan Results'
-              security-result-attributes: '{ "scanner": "${{ secrets.SCANNER_NAME_VERACODE }}", "applicationName": "${{ secrets.VULNERABILITY_APPLICATION_NAME }}", "buildVersion": "21 Mar 2023 Static", "securityToolId":"d8090a0d47d3c6109c52ace8736d43ad" }'
-              # applicationName: Name of your Veracode application and is required. This attribute is applicable only for Veracode.
-              # scanner: Scanning tool and is required e.g. Veracode.
-              # buildVersion: Veracode Scan name / build version and is optional. This attribute is applicable only for Veracode.
-              # securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
   deploy:
     name: Deploy
-    needs: ServiceNowSecurityScanResultsVeracode
     runs-on: ubuntu-latest
     steps:
       - name: Custom Change
-        uses: ServiceNow/servicenow-devops-change@v4.0.0
+        uses: ServiceNow/servicenow-devops-change@dev
         with:
           devops-integration-user-name: ${{ secrets.SN_DEVOPS_USER }}
           devops-integration-user-password: ${{ secrets.SN_DEVOPS_PASSWORD }}
-          devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}          
           instance-url: ${{ secrets.SN_INSTANCE_URL }}
           tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
           context-github: ${{ toJSON(github) }}
@@ -56,6 +26,61 @@ jobs:
           
       - name: Run deployment scripts
         run: echo Completed Deployment.
+
+# on:
+#   pull_request:
+#   workflow_dispatch:
+
+# jobs:
+#   ServiceNowSecurityScanResultsVeracode:
+#       # jobs that must complete successfully before this job will run
+#       # type of machine to run the job on
+#       runs-on: ubuntu-latest
+#       name: ServiceNow Security Scan Results
+#       steps:
+#         - name: ServiceNow DevOps Security Results
+#           uses: ServiceNow/servicenow-devops-security-result@v3.1.0
+#           with:
+#               # Devops Integration User Name
+#               devops-integration-user-name: ${{ secrets.SN_DEVOPS_USER }}
+#               # Devops Integration User Password
+#               devops-integration-user-password: ${{ secrets.SN_DEVOPS_PASSWORD }}
+#               # Devops Integration Token
+#               devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+#               # ServiceNow Instance URL
+#               instance-url: ${{ secrets.SN_INSTANCE_URL }}
+#               # Orchestration Tool Id
+#               tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+#               # GitHub Context
+#               context-github: ${{ toJSON(github) }}
+#               # Display Name of the Job
+#               job-name: 'ServiceNow Security Scan Results'
+#               security-result-attributes: '{ "scanner": "${{ secrets.SCANNER_NAME_VERACODE }}", "applicationName": "${{ secrets.VULNERABILITY_APPLICATION_NAME }}", "buildVersion": "21 Mar 2023 Static", "securityToolId":"d8090a0d47d3c6109c52ace8736d43ad" }'
+#               # applicationName: Name of your Veracode application and is required. This attribute is applicable only for Veracode.
+#               # scanner: Scanning tool and is required e.g. Veracode.
+#               # buildVersion: Veracode Scan name / build version and is optional. This attribute is applicable only for Veracode.
+#               # securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
+#   deploy:
+#     name: Deploy
+#     needs: ServiceNowSecurityScanResultsVeracode
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Custom Change
+#         uses: ServiceNow/servicenow-devops-change@v4.0.0
+#         with:
+#           devops-integration-user-name: ${{ secrets.SN_DEVOPS_USER }}
+#           devops-integration-user-password: ${{ secrets.SN_DEVOPS_PASSWORD }}
+#           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}          
+#           instance-url: ${{ secrets.SN_INSTANCE_URL }}
+#           tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+#           context-github: ${{ toJSON(github) }}
+#           job-name: 'Deploy'
+#           change-request: '{"autoCloseChange":true,"attributes":{"chg_model": {"name": "Normal" },"short_description":"Automated Software Deployments","description":"Automated Software Deployment.","assignment_group":"0a52d3dcd7011200f2d224837e6103f2","implementation_plan":"Software update is tested and results can be found in Test Summaries Tab.","backout_plan":"When software fails in production, the previous software release will be re-deployed.","test_plan":"Testing if the software was successfully deployed."}}'
+#           interval: '100'
+#           timeout: '3600'
+          
+#       - name: Run deployment scripts
+#         run: echo Completed Deployment.
 
 
 # on: workflow_dispatch
