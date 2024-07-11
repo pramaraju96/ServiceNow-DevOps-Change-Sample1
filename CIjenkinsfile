@@ -30,9 +30,11 @@ pipeline {
 			steps {
 			  	sh 'mvn test'
 				sleep(5);
+				/*
 				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 					sh "exit 1"
 				}
+				*/
 			}
 			post {
 				always {
