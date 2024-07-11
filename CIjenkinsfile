@@ -15,7 +15,7 @@ pipeline {
 
 	environment {
 		SCANNER_HOME = tool 'sonarScanner'
-		VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1' //Ensure you update the correct Application name
+		VERACODE_APPLICATION_NAME = 'VeraDemo10' //Ensure you update the correct Application name
 		VERACODE_SCANNER_NAME = 'Veracode'
 	} 
 
@@ -67,13 +67,32 @@ pipeline {
 			}
 		}
 
-/*
-		stage('Security Scan') {
+
+		stage('Veracode Security Scan') {
 			steps {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
 			}
 		}
-
+		
+		stage('CheckmarxOne Security Scan') {
+			steps {
+				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx One", "projectName": "pramaraju96/ServiceNow-DevOps-Change-Sample", "projectId": "880a8a8e-8627-48b5-9293-4f33a59f0f9c", "securityToolId": "57444f1197d3861015ee71df9153afa7"}'
+				// scanner: Scanning tool and is required e.g. Checkmarx One.
+				// projectName/projectId: Name/Id of your Checkmarx One project and is required. This attribute is applicable only for Checkmarx One.
+				// scanId: Checkmarx One scan id and is optional. This attribute is applicable only for Checkmarx One.
+				// securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
+			}
+		}
+		
+		stage('CheckmarxSAST Security Scan') {
+			steps {
+				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "2662de014757c6109c52ace8736d433f"}'
+				// scanner: Scanning tool and is required e.g. Checkmarx SAST.
+				// projectId: Id of your Checkmarx SAST project and is required. This attribute is applicable only for Checkmarx SAST.
+				// securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
+			}
+		}
+/*
 		stage('Register Package') {
 			steps {
 				snDevOpsPackage(
