@@ -20,7 +20,7 @@ pipeline {
 				echo "RR semanticVersion -> ${semanticVersion}"
 				snDevOpsPackage(
 					name: "${packageName}",
-					configurationName: "DevOps-checkmarx02.service-now.com-1710737267460"
+					configurationName: "DevOps-checkmarx05.service-now.com-1720680378716",
 					artifactsPayload: """
 					{
 					    "artifacts":
@@ -41,7 +41,7 @@ pipeline {
 			steps {
 			    sleep(60);
 			    snDevOpsChange(
-				configurationName: "DevOps-checkmarx02.service-now.com-1710737267460",
+				configurationName: "DevOps-checkmarx05.service-now.com-1720680378716",
 				changeRequestDetails: '''
 			    {
 			    "attributes": {
