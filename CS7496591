@@ -1,0 +1,170 @@
+
+def packageName = "app-devops-package-cicd.war"
+def artifactname = "app-devops-artifact-cicd.jar"
+def version = "1.${BUILD_NUMBER}"
+def semanticVersion = "1.${BUILD_NUMBER}.0"
+def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
+
+// CI pipline - Build, Test, Sonar Scan, Security Scan - Veracode
+// CD pipline - Change, Deploy
+
+pipeline {
+	agent any
+	
+	tools {
+		maven 'Maven'
+	}
+
+	environment {
+		//SCANNER_HOME = tool 'sonarScanner'
+		VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1' //Ensure you update the correct Application name
+		VERACODE_SCANNER_NAME = 'Veracode'
+	} 
+
+	stages {
+		stage('Build') {
+      when {
+        equals expected: 2, actual: 2
+      }
+			steps {
+				sh 'mvn -B -DskipTests clean compile'
+			}
+		}
+
+		stage('Test') {
+      when {
+        equals expected: 2, actual: 2
+      }
+			steps {
+			  	sh 'mvn test'
+				sleep(5);
+			}
+			post {
+				always {
+					junit "**/target/surefire-reports/*.xml"
+				}
+			}
+		}
+
+/*
+		stage('Register Artifact') {
+      when {
+        equals expected: 1, actual: 2
+      }
+			steps {
+				snDevOpsArtifact(
+				artifactsPayload: """
+				{
+				"artifacts":
+				[
+				    {
+				        "name": "${artifactname}",
+				        "version": "${version}",
+				        "semanticVersion": "${semanticVersion}",
+				        "repositoryName": "${repoName}"
+				    }
+				],
+				"branchName": "main"
+				}""")
+			}     
+		}
+*/
+		
+		stage('Sonar Scan') {
+      when {
+        equals expected: 2, actual: 2
+      }
+			steps {
+				sonarSummaries()
+			}
+		}
+
+		stage('Security Scan - Veracode') {
+      when {
+        equals expected: 2, actual: 2
+      }
+			steps {
+				echo "${env.VERACODE_APPLICATION_NAME}"
+				echo "${VERACODE_APPLICATION_NAME}"
+				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}')
+			}
+		}
+
+/*
+		stage('Register Package') {
+      when {
+        equals expected: 1, actual: 2
+      }
+			steps {
+				snDevOpsPackage(
+				name: "${packageName}",
+				artifactsPayload: """
+				{
+				    "artifacts":
+				    [
+				        {
+				            "name": "${artifactname}",
+				            "version": "${version}",
+				            "semanticVersion": "${semanticVersion}",
+				            "repositoryName": "${repoName}"
+				        }
+				    ],
+				    "branchName": "main"
+				}""")
+			}
+		}
+*/
+		  
+		stage('Change') {
+      when {
+        equals expected: 1, actual: 2
+      }
+			steps {
+			    snDevOpsChange(
+				changeRequestDetails: '''
+			    {
+			    "attributes": {
+					"type":"emergency",
+					"requested_by": {
+						"name": "DevOps System"
+					}, //requested_by with name.
+					//You can provide requested_by with sys_id. Example: "requested_by": "62826bf03710200044e0bfc8bcbe5df1", 
+					"assignment_group": {
+						"name": "Change Management"
+					}, //assignment_group with name.
+					//You can provide assignment_group with sys_id. Example: "assignment_group": "5f721d93c0a8010e015533746de18bf9",
+					"priority": "2",
+					"comments": "This is a sample pipeline script to be added in your change step",
+					"work_notes": "Update this to work_notes",
+					"start_date": "", //This is the planned start date.
+					"end_date": "" // This is the planned end date.
+				}
+			    }''')
+				script {
+					sh 'exit 1'
+				}
+			}
+		}
+
+		stage('Deploy') {
+      when {
+        equals expected: 1, actual: 2
+      }
+			steps {
+				echo "Deploying the change..."
+			}
+		}
+	}
+}
+
+def sonarSummaries() {
+	withSonarQubeEnv(installationName: 'sonarcloud.io'){
+		sh 'mvn clean verify sonar:sonar \
+		-Dsonar.branch.name=test1 \
+		-Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
+		-Dsonar.host.url=https://sonarcloud.io \
+		-Dsonar.organization=pramaraju96 \
+		-Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2'
+		    
+    }
+}
