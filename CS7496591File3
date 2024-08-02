@@ -76,6 +76,8 @@ pipeline {
                 expression { return (params.BUILD_TYPE == 'CD' && params.RUN_CHANGE) }
             }
             steps {
+                echo "Commented out snDevOpsChange() step"
+/*
                 snDevOpsChange(
                     changeRequestDetails: '''
                     {
@@ -94,9 +96,14 @@ pipeline {
                         "end_date": ""
                     }
                     }''')
+*/
+/*
                 script {
+                    // this condition is needed to mark the Step Execution as Failed in ServiceNow
+                    // also note, the succeeding stages are skipped in Jenkins but the Step Execution is marked as Failed instead of Skipped for those stages in ServiceNow
                     sh 'exit 1'
                 }
+*/
             }
         }
 
