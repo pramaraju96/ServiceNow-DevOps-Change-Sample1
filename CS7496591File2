@@ -1,0 +1,124 @@
+def packageName = "app-devops-package-cicd.war"
+def artifactname = "app-devops-artifact-cicd.jar"
+def version = "1.${BUILD_NUMBER}"
+def semanticVersion = "1.${BUILD_NUMBER}.0"
+def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accordingly.
+
+pipeline {
+    agent any
+    
+    tools {
+        maven 'Maven'
+    }
+
+    environment {
+        //SCANNER_HOME = tool 'sonarScanner'
+        VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1' // Ensure you update the correct Application name
+        VERACODE_SCANNER_NAME = 'Veracode'
+    }
+
+    parameters {
+        choice(name: 'BUILD_TYPE', choices: ['CI', 'CD'], description: 'Select CI for Continuous Integration or CD for Continuous Deployment')
+        booleanParam(name: 'RUN_BUILD', defaultValue: true, description: 'Run the Build Stage')
+        booleanParam(name: 'RUN_TEST', defaultValue: true, description: 'Run the Test Stage')
+        booleanParam(name: 'RUN_SONAR_SCAN', defaultValue: true, description: 'Run the Sonar Scan Stage')
+        booleanParam(name: 'RUN_SECURITY_SCAN', defaultValue: true, description: 'Run the Security Scan Stage')
+        booleanParam(name: 'RUN_CHANGE', defaultValue: false, description: 'Run the Change Stage')
+        booleanParam(name: 'RUN_DEPLOY', defaultValue: false, description: 'Run the Deploy Stage')
+    }
+
+    stages {
+        stage('Build') {
+            when {
+                expression { params.RUN_BUILD && params.BUILD_TYPE == 'CI' }
+            }
+            steps {
+                sh 'mvn -B -DskipTests clean compile'
+            }
+        }
+
+        stage('Test') {
+            when {
+                expression { params.RUN_TEST && params.BUILD_TYPE == 'CI' }
+            }
+            steps {
+                sh 'mvn test'
+                sleep(5)
+            }
+            post {
+                always {
+                    junit "**/target/surefire-reports/*.xml"
+                }
+            }
+        }
+
+        stage('Sonar Scan') {
+            when {
+                expression { params.RUN_SONAR_SCAN && params.BUILD_TYPE == 'CI' }
+            }
+            steps {
+                sonarSummaries()
+            }
+        }
+
+        stage('Security Scan - Veracode') {
+            when {
+                expression { params.RUN_SECURITY_SCAN && params.BUILD_TYPE == 'CI' }
+            }
+            steps {
+                echo "${env.VERACODE_APPLICATION_NAME}"
+                echo "${VERACODE_APPLICATION_NAME}"
+                snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}')
+            }
+        }
+
+        stage('Change') {
+            when {
+                expression { params.RUN_CHANGE && params.BUILD_TYPE == 'CD' }
+            }
+            steps {
+                snDevOpsChange(
+                    changeRequestDetails: '''
+                    {
+                    "attributes": {
+                        "type":"emergency",
+                        "requested_by": {
+                            "name": "DevOps System"
+                        },
+                        "assignment_group": {
+                            "name": "Change Management"
+                        },
+                        "priority": "2",
+                        "comments": "This is a sample pipeline script to be added in your change step",
+                        "work_notes": "Update this to work_notes",
+                        "start_date": "",
+                        "end_date": ""
+                    }
+                    }''')
+                script {
+                    sh 'exit 1'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                expression { params.RUN_DEPLOY && params.BUILD_TYPE == 'CD' }
+            }
+            steps {
+                echo "Deploying the change..."
+            }
+        }
+    }
+}
+
+def sonarSummaries() {
+    withSonarQubeEnv(installationName: 'sonarcloud.io') {
+        sh 'mvn clean verify sonar:sonar \
+        -Dsonar.branch.name=main \
+        -Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
+        -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.organization=pramaraju96 \
+        -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2'
+    }
+}
