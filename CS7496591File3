@@ -5,7 +5,6 @@ pipeline {
         maven 'Maven'
     }
 
-
     environment {
         //SCANNER_HOME = tool 'sonarScanner'
         VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1' // Ensure you update the correct Application name
