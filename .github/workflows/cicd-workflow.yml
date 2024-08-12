@@ -172,7 +172,7 @@ jobs:
           # You can specify the assignment_group attribute either with name or sys_id. Example: "assignment_group":{"name": "Change Approval Team"} or "assignment_group": "5f721d93c0a8010e015533746de18bf9"
           # start_date: Enter the planned start date
           # end_date: Enter the planned end date
-          deployment-gate: '{"environment":"env_deployment_gates","jobName":"ServiceNow DevOps Get Change"}'
+          #deployment-gate: '{"environment":"env_deployment_gates","jobName":"ServiceNow DevOps Get Change"}'
           abortOnChangeCreationFailure: false
           interval: 100
           timeout:
@@ -188,7 +188,7 @@ jobs:
     # type of machine to run the job on
     runs-on: ubuntu-latest
     name: 'ServiceNow DevOps Get Change'
-    environment: env_deployment_gates
+    #environment: env_deployment_gates
     outputs:
       changeRequestNumber: ${{ steps.get_change.outputs.change-request-number }}
     steps:
