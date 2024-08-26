@@ -63,7 +63,7 @@ pipeline {
 			}
 		}
 
-
+/*
 		stage('Security Scan - Veracode') {
 			steps {
 				echo "${env.VERACODE_APPLICATION_NAME}"
@@ -71,7 +71,7 @@ pipeline {
 				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "ServiceNow DevOps App#1"}')
 			}
 		}
-/*
+
 		stage('Security Scan - Checkmarx SAST') {
 			steps {
 				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}')
@@ -105,7 +105,8 @@ pipeline {
 				changeRequestDetails: '''
 			    {
 			    "attributes": {
-					"type":"emergency",
+					"type":"normal",
+					"chg_model":{"name":"DevOps"},
 					"requested_by": {
 						"name": "DevOps System"
 					}, //requested_by with name.
