@@ -3,6 +3,10 @@ node {
     
     stage('Initialize') {
         script {
+            checkout scmGit(
+                branches: [[name: 'scratch/scripted']],
+                userRemoteConfigs: [[url: 'https://github.com/pramaraju96/ServiceNow-DevOps-Change-Sample1.git']])
+
             echo "GIT_BRANCH: ${env.GIT_BRANCH}"
             echo "GIT_URL: ${env.GIT_URL}"
     
