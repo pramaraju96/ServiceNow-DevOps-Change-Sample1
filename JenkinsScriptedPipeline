@@ -3,16 +3,24 @@ node {
     
     stage('Initialize') {
         script {
-            def buildNumber = "${BUILD_NUMBER}"
-            def version = "1.${buildNumber}"
-            def semanticVersion = "1.${buildNumber}.0"
-            def branchName = env.GIT_BRANCH.replaceAll(/^refs\/heads\//, '')
-            def repositoryName = env.GIT_URL.replaceFirst(/.*\/([^\/]+)\.git/, '$1')
-
-            env.VERSION = version
-            env.SEMANTIC_VERSION = semanticVersion
-            env.BRANCH_NAME = branchName
-            env.REPO_NAME = repositoryName
+            echo "GIT_BRANCH: ${env.GIT_BRANCH}"
+            echo "GIT_URL: ${env.GIT_URL}"
+    
+            // Proceed only if variables are set
+            if (env.GIT_BRANCH && env.GIT_URL) {
+                def buildNumber = "${BUILD_NUMBER}"
+                def version = "1.${buildNumber}"
+                def semanticVersion = "1.${buildNumber}.0"
+                def branchName = env.GIT_BRANCH.replaceAll(/^refs\/heads\//, '')
+                def repositoryName = env.GIT_URL.replaceFirst(/.*\/([^\/]+)\.git/, '$1')
+    
+                env.VERSION = version
+                env.SEMANTIC_VERSION = semanticVersion
+                env.BRANCH_NAME = branchName
+                env.REPO_NAME = repositoryName
+            } else {
+                error "Required environment variables are not set: GIT_BRANCH or GIT_URL"
+            }
         }
     }
 
