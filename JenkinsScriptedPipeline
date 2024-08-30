@@ -2,29 +2,27 @@ node {
     def mvnHome = tool 'ramaMaven'
     
     stage('Initialize') {
-        script {
-            checkout scmGit(
-                branches: [[name: 'scratch/scripted']],
-                userRemoteConfigs: [[url: 'https://github.com/pramaraju96/ServiceNow-DevOps-Change-Sample1.git']])
+        // Perform SCM checkout to ensure environment variables are populated
+        checkout scm
+        
+        // Print environment variables to debug
+        echo "Branch Name: ${env.BRANCH_NAME}"
+        echo "Git URL: ${env.GIT_URL}"
 
-            echo "GIT_BRANCH: ${env.GIT_BRANCH}"
-            echo "GIT_URL: ${env.GIT_URL}"
-    
-            // Proceed only if variables are set
-            if (env.GIT_BRANCH && env.GIT_URL) {
-                def buildNumber = "${BUILD_NUMBER}"
-                def version = "1.${buildNumber}"
-                def semanticVersion = "1.${buildNumber}.0"
-                def branchName = env.GIT_BRANCH.replaceAll(/^refs\/heads\//, '')
-                def repositoryName = env.GIT_URL.replaceFirst(/.*\/([^\/]+)\.git/, '$1')
-    
-                env.VERSION = version
-                env.SEMANTIC_VERSION = semanticVersion
-                env.BRANCH_NAME = branchName
-                env.REPO_NAME = repositoryName
-            } else {
-                error "Required environment variables are not set: GIT_BRANCH or GIT_URL"
-            }
+        script {
+            // Default fallback values if the environment variables are not set
+            def branchName = env.BRANCH_NAME ?: 'default-branch'
+            def gitUrl = env.GIT_URL ?: 'default-url'
+            
+            def buildNumber = "${BUILD_NUMBER}"
+            def version = "1.${buildNumber}"
+            def semanticVersion = "1.${buildNumber}.0"
+            def repositoryName = gitUrl.replaceFirst(/.*\/([^\/]+)\.git/, '$1')
+
+            env.VERSION = version
+            env.SEMANTIC_VERSION = semanticVersion
+            env.BRANCH_NAME = branchName
+            env.REPO_NAME = repositoryName
         }
     }
 
