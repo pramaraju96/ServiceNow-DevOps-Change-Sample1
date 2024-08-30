@@ -1,0 +1,107 @@
+node {
+    def mvnHome = tool 'Maven'
+    
+    stage('Initialize') {
+        script {
+            def buildNumber = "${BUILD_NUMBER}"
+            def version = "1.${buildNumber}"
+            def semanticVersion = "1.${buildNumber}.0"
+            def branchName = env.GIT_BRANCH.replaceAll(/^refs\/heads\//, '')
+            def repoName = env.GIT_URL.replaceFirst(/.*\/([^\/]+)\.git/, '$1')
+
+            env.VERSION = version
+            env.SEMANTIC_VERSION = semanticVersion
+            env.BRANCH_NAME = branchName
+            env.REPO_NAME = repoName
+        }
+    }
+
+    stage('Build') {
+        env.PATH = "${mvnHome}/bin:${env.PATH}"
+        sh 'mvn -B -DskipTests clean compile'
+    }
+
+    stage('Test') {
+        sh 'mvn test'
+        sleep(5)
+        junit '**/target/surefire-reports/*.xml'
+    }
+
+    stage('Register Artifact') {
+        def payload = """
+        {
+            "artifacts": [
+                {
+                    "name": "app-devops-artifact-cicd.jar",
+                    "version": "${env.VERSION}",
+                    "semanticVersion": "${env.SEMANTIC_VERSION}",
+                    "repositoryName": "${env.REPO_NAME}"
+                }
+            ],
+            "branchName": "${env.BRANCH_NAME}"
+        }"""
+        snDevOpsArtifact(artifactsPayload: payload)
+    }
+
+    stage('Sonar Scan') {
+        withSonarQubeEnv('sonarcloud.io') {
+            sh """
+            mvn clean verify sonar:sonar \
+            -Dsonar.branch.name=${env.BRANCH_NAME} \
+            -Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=pramaraju96 \
+            -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2
+            """
+        }
+    }
+
+    stage('Security Scan - Veracode') {
+        echo "Running security scan with Veracode for ${env.VERACODE_APPLICATION_NAME}"
+        def securityPayload = """
+        {
+            "scanner": "Veracode",
+            "applicationName": "PetStoreAPI-Github"
+        }"""
+        snDevOpsSecurityResult(securityResultAttributes: securityPayload)
+    }
+
+    stage('Register Package') {
+        def packagePayload = """
+        {
+            "artifacts": [
+                {
+                    "name": "app-devops-artifact-cicd.jar",
+                    "version": "${env.VERSION}",
+                    "semanticVersion": "${env.SEMANTIC_VERSION}",
+                    "repositoryName": "${env.REPO_NAME}"
+                }
+            ],
+            "branchName": "${env.BRANCH_NAME}"
+        }"""
+        snDevOpsPackage(name: "app-devops-package-cicd.war", artifactsPayload: packagePayload)
+    }
+
+    stage('Change') {
+        def changePayload = """
+        {
+            "attributes": {
+                "type": "normal",
+                "chg_model": {"name": "DevOps"},
+                "requested_by": {"name": "DevOps System"},
+                "assignment_group": {"name": "Change Management"},
+                "priority": "2",
+                "comments": "This is a sample pipeline script to be added in your change step",
+                "work_notes": "Update this to work_notes",
+                "start_date": "",
+                "end_date": ""
+            }
+        }"""
+        snDevOpsChange(changeRequestDetails: changePayload)
+        sh 'exit 1'
+    }
+
+    stage('Deploy') {
+        echo "Deploying the change..."
+    }
+}
