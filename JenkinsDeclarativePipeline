@@ -1,0 +1,147 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven'
+    }
+
+    environment {
+        // Static environment variables
+        VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1'
+        VERACODE_SCANNER_NAME = 'Veracode'
+    }
+
+    stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    // Dynamic variable definitions
+                    def buildNumber = "${BUILD_NUMBER}"
+                    def version = "1.${buildNumber}"
+                    def semanticVersion = "1.${buildNumber}.0"
+                    def branchName = "${env.GIT_BRANCH}".replaceAll(/^refs\/heads\//, '')
+                    def repoName = "${env.GIT_URL}".replaceFirst(/.*\/([^\/]+)\.git/, '$1')
+
+                    // Export dynamic variables to environment
+                    env.VERSION = version
+                    env.SEMANTIC_VERSION = semanticVersion
+                    env.BRANCH_NAME = branchName
+                    env.REPO_NAME = repoName
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean compile'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+                sleep(5)
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Register Artifact') {
+            steps {
+                snDevOpsArtifact(
+                    artifactsPayload: """
+                    {
+                        "artifacts": [
+                            {
+                                "name": "app-devops-artifact-cicd.jar",
+                                "version": "${env.VERSION}",
+                                "semanticVersion": "${env.SEMANTIC_VERSION}",
+                                "repositoryName": "${env.REPO_NAME}"
+                            }
+                        ],
+                        "branchName": "${env.BRANCH_NAME}"
+                    }"""
+                )
+            }
+        }
+
+        stage('Sonar Scan') {
+            steps {
+                withSonarQubeEnv('sonarcloud.io') {
+                    sh """
+                    mvn clean verify sonar:sonar \
+                    -Dsonar.branch.name=${env.BRANCH_NAME} \
+                    -Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
+                    -Dsonar.host.url=https://sonarcloud.io \
+                    -Dsonar.organization=pramaraju96 \
+                    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2
+                    """
+                }
+            }
+        }
+
+        stage('Security Scan - Veracode') {
+            steps {
+                echo "Running security scan with Veracode for ${env.VERACODE_APPLICATION_NAME}"
+                snDevOpsSecurityResult(
+                    securityResultAttributes: '''
+                    {
+                        "scanner": "Veracode",
+                        "applicationName": "PetStoreAPI-Github"
+                    }'''
+                )
+            }
+        }
+
+        stage('Register Package') {
+            steps {
+                snDevOpsPackage(
+                    name: "app-devops-package-cicd.war",
+                    artifactsPayload: """
+                    {
+                        "artifacts": [
+                            {
+                                "name": "app-devops-artifact-cicd.jar",
+                                "version": "${env.VERSION}",
+                                "semanticVersion": "${env.SEMANTIC_VERSION}",
+                                "repositoryName": "${env.REPO_NAME}"
+                            }
+                        ],
+                        "branchName": "${env.BRANCH_NAME}"
+                    }"""
+                )
+            }
+        }
+
+        stage('Change') {
+            steps {
+                snDevOpsChange(
+                    changeRequestDetails: '''
+                    {
+                        "attributes": {
+                            "type": "normal",
+                            "chg_model": {"name": "DevOps"},
+                            "requested_by": {"name": "DevOps System"},
+                            "assignment_group": {"name": "Change Management"},
+                            "priority": "2",
+                            "comments": "This is a sample pipeline script to be added in your change step",
+                            "work_notes": "Update this to work_notes",
+                            "start_date": "",
+                            "end_date": ""
+                        }
+                    }'''
+                )
+                sh 'exit 1'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying the change..."
+            }
+        }
+    }
+}
