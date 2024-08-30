@@ -1,5 +1,5 @@
 node {
-    def mvnHome = tool 'Maven'
+    def mvnHome = tool 'ramaMaven'
     
     stage('Initialize') {
         script {
@@ -7,18 +7,18 @@ node {
             def version = "1.${buildNumber}"
             def semanticVersion = "1.${buildNumber}.0"
             def branchName = env.GIT_BRANCH.replaceAll(/^refs\/heads\//, '')
-            def repoName = env.GIT_URL.replaceFirst(/.*\/([^\/]+)\.git/, '$1')
+            def repositoryName = env.GIT_URL.replaceFirst(/.*\/([^\/]+)\.git/, '$1')
 
             env.VERSION = version
             env.SEMANTIC_VERSION = semanticVersion
             env.BRANCH_NAME = branchName
-            env.REPO_NAME = repoName
+            env.REPO_NAME = repositoryName
         }
     }
 
     stage('Build') {
         env.PATH = "${mvnHome}/bin:${env.PATH}"
-        sh 'mvn -B -DskipTests clean compile'
+        sh 'mvn -B -DskipTests package'
     }
 
     stage('Test') {
@@ -43,7 +43,7 @@ node {
         snDevOpsArtifact(artifactsPayload: payload)
     }
 
-    stage('Sonar Scan') {
+    stage('SonarCloud Scan') {
         withSonarQubeEnv('sonarcloud.io') {
             sh """
             mvn clean verify sonar:sonar \
@@ -98,7 +98,8 @@ node {
             }
         }"""
         snDevOpsChange(changeRequestDetails: changePayload)
-        sh 'exit 1'
+        // Simulate a failure by exiting with status code 1
+        // sh 'exit 1'
     }
 
     stage('Deploy') {
