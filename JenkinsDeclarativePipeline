@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'
+        maven 'ramaMaven'
     }
 
     environment {
@@ -20,26 +20,28 @@ pipeline {
                     def version = "1.${buildNumber}"
                     def semanticVersion = "1.${buildNumber}.0"
                     def branchName = "${env.GIT_BRANCH}".replaceAll(/^refs\/heads\//, '')
-                    def repoName = "${env.GIT_URL}".replaceFirst(/.*\/([^\/]+)\.git/, '$1')
+                    def repositoryName = "${env.GIT_URL}".replaceFirst(/.*\/([^\/]+)\.git/, '$1')
 
                     // Export dynamic variables to environment
                     env.VERSION = version
                     env.SEMANTIC_VERSION = semanticVersion
                     env.BRANCH_NAME = branchName
-                    env.REPO_NAME = repoName
+                    env.REPO_NAME = repositoryName
                 }
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean compile'
+                sh 'mvn -B -DskipTests package'
+                sleep(5)
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                // Run Tests with Detailed Output
+                sh 'mvn test -X'
                 sleep(5)
             }
             post {
@@ -68,17 +70,22 @@ pipeline {
             }
         }
 
-        stage('Sonar Scan') {
+        stage('SonarCloud Scan') {
             steps {
                 withSonarQubeEnv('sonarcloud.io') {
-                    sh """
-                    mvn clean verify sonar:sonar \
-                    -Dsonar.branch.name=${env.BRANCH_NAME} \
-                    -Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
-                    -Dsonar.host.url=https://sonarcloud.io \
-                    -Dsonar.organization=pramaraju96 \
-                    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2
-                    """
+                    withCredentials([
+                        string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN'),
+                        string(credentialsId: 'sonar-project-key', variable: 'SONAR_PROJECT_KEY')
+                    ]) {
+                        sh """
+                        mvn clean verify sonar:sonar \
+                        -Dsonar.branch.name=${env.BRANCH_NAME} \
+                        -Dsonar.login=${SONAR_TOKEN} \
+                        -Dsonar.host.url=https://sonarcloud.io \
+                        -Dsonar.organization=pramaraju96 \
+                        -Dsonar.projectKey=${SONAR_PROJECT_KEY}
+                        """
+                    }
                 }
             }
         }
@@ -134,7 +141,8 @@ pipeline {
                         }
                     }'''
                 )
-                sh 'exit 1'
+                // Simulate a failure by exiting with status code 1
+                // sh 'exit 1'
             }
         }
 
