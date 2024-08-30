@@ -2,15 +2,15 @@ node {
     def mvnHome = tool 'ramaMaven'
 
 
-        stage('Clean checkout') {
-            steps {
-                // Environment variables related to SCM (like GIT_URL) are typically set
-                echo "GIT_URL: ${env.GIT_URL}"
-                checkout([$class: 'GitSCM', 
-                          branches: [[name: "master"]],
-                          userRemoteConfigs: [[url: "${env.GIT_URL}"]]])
-            }
+    // Clean checkout stage
+    stage('Clean checkout') {
+        script {
+            echo "GIT_URL: ${env.GIT_URL}"
+            checkout([$class: 'GitSCM', 
+                      branches: [[name: "master"]],
+                      userRemoteConfigs: [[url: "${env.GIT_URL}"]]])
         }
+    }
 
     stage('Initialize') {
         // Perform SCM checkout to ensure environment variables are populated
