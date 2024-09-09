@@ -75,8 +75,8 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonarcloud.io') {
                     withCredentials([
-                        string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN'),
-                        string(credentialsId: 'sonar-project-key', variable: 'SONAR_PROJECT_KEY')
+                        string(credentialsId: 'sonarcloud-token', variable: 'SONAR_TOKEN'),
+                        string(credentialsId: 'sonarcloud-projectkey', variable: 'SONAR_PROJECT_KEY')
                     ]) {
                         sh """
                         mvn clean verify sonar:sonar \
