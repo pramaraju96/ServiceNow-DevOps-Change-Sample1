@@ -62,7 +62,7 @@ node {
         sleep(5)
         junit '**/target/surefire-reports/*.xml'
     }
-
+/*
     stage('Register Artifact') {
         steps {
             def payload = """
@@ -80,7 +80,7 @@ node {
             snDevOpsArtifact(artifactsPayload: payload)
         }
     }
-
+*/
     stage('SonarCloud Scan') {
         withSonarQubeEnv('sonarcloud.io') {
             sh """
@@ -94,22 +94,13 @@ node {
         }
     }
 
-    stage('Security Scan - Veracode') {
-        echo "Running security scan with Veracode for ${env.VERACODE_APPLICATION_NAME}"
-        def securityPayload = """
-        {
-            "scanner": "Veracode",
-            "applicationName": "PetStoreAPI-Github"
-        }"""
+    stage('Register Artifact') {
         steps {
-            snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}')
-        }
-    }
-
-    stage('Register Package') {
-        def packagePayload = """
-        {
-            "artifacts": [
+            snDevOpsArtifact(
+            artifactsPayload: """
+            {
+            "artifacts":
+            [
                 {
                     "name": "app-devops-artifact-cicd.jar",
                     "version": "${env.VERSION}",
@@ -118,35 +109,74 @@ node {
                 }
             ],
             "branchName": "${env.BRANCH_NAME}"
-        }"""
+            }""")
+        }     
+    }
+
+    stage('Security Scan - Veracode') {
         steps {
-            snDevOpsPackage(name: "app-devops-package-cicd.war", artifactsPayload: packagePayload)
+            snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}')
+        }
+    }
+/*
+    stage('Security Scan - Checkmarx SAST') {
+        steps {
+            snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}')
+        }
+    }
+*/
+    stage('Register Package') {
+        steps {
+            snDevOpsPackage(
+            name: "${packageName}",
+            artifactsPayload: """
+            {
+                "artifacts":
+                [
+                    {
+                        "name": "${artifactname}",
+                        "version": "${version}",
+                        "semanticVersion": "${semanticVersion}",
+                        "repositoryName": "${repoName}"
+                    }
+                ],
+                "branchName": "${env.BRANCH_NAME}"
+            }""")
         }
     }
 
     stage('Change') {
-        def changePayload = """
-        {
+        steps {
+            snDevOpsChange(
+            changeRequestDetails: '''
+            {
             "attributes": {
-                "type": "normal",
-                "chg_model": {"name": "DevOps"},
-                "requested_by": {"name": "DevOps System"},
-                "assignment_group": {"name": "Change Management"},
+                "type":"normal",
+                "chg_model":{"name":"DevOps"},
+                "requested_by": {
+                    "name": "DevOps System"
+                }, //requested_by with name.
+                //You can provide requested_by with sys_id. Example: "requested_by": "62826bf03710200044e0bfc8bcbe5df1", 
+                "assignment_group": {
+                    "name": "Change Management"
+                }, //assignment_group with name.
+                //You can provide assignment_group with sys_id. Example: "assignment_group": "5f721d93c0a8010e015533746de18bf9",
                 "priority": "2",
                 "comments": "This is a sample pipeline script to be added in your change step",
                 "work_notes": "Update this to work_notes",
-                "start_date": "",
-                "end_date": ""
+                "start_date": "", //This is the planned start date.
+                "end_date": "" // This is the planned end date.
             }
-        }"""
-        steps {
-            snDevOpsChange(changeRequestDetails: changePayload)
+            }''')
+            script {
+                sh 'exit 1'
+            }
         }
-        // Simulate a failure by exiting with status code 1
-        // sh 'exit 1'
     }
 
     stage('Deploy') {
-        echo "Deploying the change..."
+        steps {
+            echo "Deploying the change..."
+        }
     }
 }
