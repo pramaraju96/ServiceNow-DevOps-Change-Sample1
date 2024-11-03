@@ -76,7 +76,9 @@ node {
             ],
             "branchName": "${env.BRANCH_NAME}"
         }"""
-        snDevOpsArtifact(artifactsPayload: payload)
+        steps {
+            snDevOpsArtifact(artifactsPayload: payload)
+        }
     }
 
     stage('SonarCloud Scan') {
@@ -99,7 +101,9 @@ node {
             "scanner": "Veracode",
             "applicationName": "PetStoreAPI-Github"
         }"""
-        snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}')
+        steps {
+            snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}')
+        }
     }
 
     stage('Register Package') {
@@ -115,7 +119,9 @@ node {
             ],
             "branchName": "${env.BRANCH_NAME}"
         }"""
-        snDevOpsPackage(name: "app-devops-package-cicd.war", artifactsPayload: packagePayload)
+        steps {
+            snDevOpsPackage(name: "app-devops-package-cicd.war", artifactsPayload: packagePayload)
+        }
     }
 
     stage('Change') {
@@ -133,7 +139,9 @@ node {
                 "end_date": ""
             }
         }"""
-        snDevOpsChange(changeRequestDetails: changePayload)
+        steps {
+            snDevOpsChange(changeRequestDetails: changePayload)
+        }
         // Simulate a failure by exiting with status code 1
         // sh 'exit 1'
     }
