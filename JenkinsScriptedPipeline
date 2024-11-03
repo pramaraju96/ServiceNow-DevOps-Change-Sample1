@@ -95,7 +95,7 @@ node {
     }
 
     stage('Register Artifact') {
-        steps {
+
             snDevOpsArtifact(
             artifactsPayload: """
             {
@@ -110,7 +110,7 @@ node {
             ],
             "branchName": "${env.BRANCH_NAME}"
             }""")
-        }     
+
     }
 
     stage('Security Scan - Veracode') {
