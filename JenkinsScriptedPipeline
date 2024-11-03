@@ -99,7 +99,7 @@ node {
             "scanner": "Veracode",
             "applicationName": "PetStoreAPI-Github"
         }"""
-        snDevOpsSecurityResult(securityResultAttributes: securityPayload)
+        snDevOpsSecurityResult(securityResultAttributes: {"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"})
     }
 
     stage('Register Package') {
