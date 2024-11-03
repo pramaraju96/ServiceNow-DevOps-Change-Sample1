@@ -7,7 +7,20 @@ node {
         script {
             // Get the GIT_URL dynamically from the checked-out SCM
             env.GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()
+            env.BRANCH_NAME = scm.getBranches()[0].getName()
+
             echo "GIT_URL: ${env.GIT_URL}"
+            echo "BRANCH_NAME: ${env.BRANCH_NAME}"
+
+            // Retrieve all branches
+            def branches = scm.getBranches()
+
+            // Print all branch names
+            echo "Branches in the repository:"
+            branches.each { branch ->
+                echo " - ${branch.getName()}"
+            }
+
             checkout([$class: 'GitSCM', 
                       branches: [[name: "${env.BRANCH_NAME}"]],
                       userRemoteConfigs: [[url: "${env.GIT_URL}"]]])
