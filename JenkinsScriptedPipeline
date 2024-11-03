@@ -64,19 +64,19 @@ node {
     }
 
     stage('Register Artifact') {
-        def payload = """
-        {
-            "artifacts": [
-                {
-                    "name": "app-devops-artifact-cicd.jar",
-                    "version": "${env.VERSION}",
-                    "semanticVersion": "${env.SEMANTIC_VERSION}",
-                    "repositoryName": "${env.REPO_NAME}"
-                }
-            ],
-            "branchName": "${env.BRANCH_NAME}"
-        }"""
         steps {
+            def payload = """
+            {
+                "artifacts": [
+                    {
+                        "name": "app-devops-artifact-cicd.jar",
+                        "version": "${env.VERSION}",
+                        "semanticVersion": "${env.SEMANTIC_VERSION}",
+                        "repositoryName": "${env.REPO_NAME}"
+                    }
+                ],
+                "branchName": "${env.BRANCH_NAME}"
+            }"""
             snDevOpsArtifact(artifactsPayload: payload)
         }
     }
