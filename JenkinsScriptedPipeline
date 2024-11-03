@@ -1,6 +1,9 @@
-node {
-    def mvnHome = tool 'ramaMaven'
-
+pipeline {
+	agent any
+	
+	tools {
+		maven 'ramaMaven'
+	}
 
     // Clean checkout stage
     stage('Clean checkout') {
@@ -95,7 +98,7 @@ node {
     }
 
     stage('Register Artifact') {
-
+        steps {
             snDevOpsArtifact(
             artifactsPayload: """
             {
@@ -110,7 +113,7 @@ node {
             ],
             "branchName": "${env.BRANCH_NAME}"
             }""")
-
+        }
     }
 
     stage('Security Scan - Veracode') {
