@@ -7,7 +7,7 @@ node {
         script {
             echo "GIT_URL: ${env.GIT_URL}"
             checkout([$class: 'GitSCM', 
-                      branches: [[name: "master"]],
+                      branches: [[name: "${env.BRANCH_NAME}"]],
                       userRemoteConfigs: [[url: "${env.GIT_URL}"]]])
         }
     }
@@ -72,7 +72,7 @@ node {
             -Dsonar.login=aa95cf5eccbb74d54d04b6c027b9b80b3ed4794f \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=pramaraju96 \
-            -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample2
+            -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample1
             """
         }
     }
