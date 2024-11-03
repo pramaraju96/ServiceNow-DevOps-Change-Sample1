@@ -5,6 +5,8 @@ node {
     // Clean checkout stage
     stage('Clean checkout') {
         script {
+            // Get the GIT_URL dynamically from the checked-out SCM
+            env.GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()
             echo "GIT_URL: ${env.GIT_URL}"
             checkout([$class: 'GitSCM', 
                       branches: [[name: "${env.BRANCH_NAME}"]],
