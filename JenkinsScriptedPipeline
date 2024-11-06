@@ -149,24 +149,24 @@ def sonarSummaries() {
 	    """
 	}
 */
-	script {
-	    withSonarQubeEnv('sonarcloud.io') {  // Use the SonarQube server configured in Jenkins
-		withCredentials([string(credentialsId: 'SONAR_LOGIN', variable: 'SONAR_LOGIN'),
-				 string(credentialsId: 'SONAR_PROJECT_KEY', variable: 'SONAR_PROJECT_KEY'),
-				 string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-	
-		   // Debug output to check the value of BRANCH_NAME
-		    echo "Branch Name: $BRANCH_NAME"  // This will print the branch name to the console
-	
-		    sh '''#!/bin/bash
-			mvn clean verify sonar:sonar \
-			-Dsonar.host.url=$SONARQUBE_URL \
-			-Dsonar.login=$SONAR_LOGIN \
-		    	-Dsonar.organization=pramaraju96 \
-			-Dsonar.projectKey=$SONAR_PROJECT_KEY \
-			-Dsonar.branch.name=$BRANCH_NAME
-		    '''
-		}
-	    }
+
+    withSonarQubeEnv('sonarcloud.io') {  // Use the SonarQube server configured in Jenkins
+	withCredentials([string(credentialsId: 'SONAR_LOGIN', variable: 'SONAR_LOGIN'),
+			 string(credentialsId: 'SONAR_PROJECT_KEY', variable: 'SONAR_PROJECT_KEY'),
+			 string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+
+	   // Debug output to check the value of BRANCH_NAME
+	    echo "Branch Name: $BRANCH_NAME"  // This will print the branch name to the console
+
+	    sh '''#!/bin/bash
+		mvn clean verify sonar:sonar \
+		-Dsonar.host.url=$SONARQUBE_URL \
+		-Dsonar.login=$SONAR_LOGIN \
+		-Dsonar.organization=pramaraju96 \
+		-Dsonar.projectKey=$SONAR_PROJECT_KEY \
+		-Dsonar.branch.name=$BRANCH_NAME
+	    '''
 	}
+    }
+
 }
