@@ -176,22 +176,26 @@ def sonarSummaries() {
 				 string(credentialsId: 'SONAR_PROJECT_KEY', variable: 'SONAR_PROJECT_KEY'),
 				 string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
 		    
-		    // Debug the environment variables
-		    echo "GIT_BRANCH: ${env.GIT_BRANCH}"  // Print GIT_BRANCH
-		    echo "BRANCH_NAME: ${env.BRANCH_NAME}"  // Print BRANCH_NAME
-		
-		    // Explicitly set BRANCH_NAME if it's not available
-		    def branchName = env.BRANCH_NAME ?: env.GIT_BRANCH ?: 'unknown'
-		    echo "Branch Name used: $branchName"  // Print the branch name to be used
-		
-		    sh '''#!/bin/bash
-			mvn clean verify sonar:sonar \
-			-Dsonar.host.url=$SONARQUBE_URL \
-			-Dsonar.login=$SONAR_LOGIN \
-			-Dsonar.organization=pramaraju96 \
-			-Dsonar.projectKey=$SONAR_PROJECT_KEY \
-			-Dsonar.branch.name=$branchName  # Use the branchName variable explicitly
-		    '''
+	    // Debug the environment variables
+	    echo "GIT_BRANCH: ${env.GIT_BRANCH}"  // Print GIT_BRANCH
+	    echo "BRANCH_NAME: ${env.BRANCH_NAME}"  // Print BRANCH_NAME
+
+	    // Explicitly set BRANCH_NAME if it's not available
+	    def branchName = env.BRANCH_NAME ?: env.GIT_BRANCH ?: 'unknown'
+	    
+	    // Clean the branch name to remove 'origin/' if it exists
+	    def cleanedBranchName = branchName.replaceFirst("^origin/", "") // Strip 'origin/' if it exists
+
+	    echo "Cleaned Branch Name used: $cleanedBranchName"  // Print the cleaned branch name
+
+	    sh '''#!/bin/bash
+		mvn clean verify sonar:sonar \
+		-Dsonar.host.url=$SONARQUBE_URL \
+		-Dsonar.login=$SONAR_LOGIN \
+		-Dsonar.organization=pramaraju96 \
+		-Dsonar.projectKey=$SONAR_PROJECT_KEY \
+		-Dsonar.branch.name=$cleanedBranchName  # Pass cleaned branch name
+	    '''
 		}
 	}
 }
