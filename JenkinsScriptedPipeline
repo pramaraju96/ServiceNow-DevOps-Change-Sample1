@@ -17,6 +17,7 @@ pipeline {
 		//SCANNER_HOME = tool 'sonarScanner'
 		VERACODE_APPLICATION_NAME = 'ServiceNow DevOps App#1' //Ensure you update the correct Application name
 		VERACODE_SCANNER_NAME = 'Veracode'
+        	SONARQUBE_URL = 'https://sonarcloud.io'
 	} 
 
 	stages {
@@ -136,6 +137,7 @@ pipeline {
 }
 
 def sonarSummaries() {
+/*
 	withSonarQubeEnv('sonarcloud.io') {
 	    sh """
 	    mvn clean verify sonar:sonar \
@@ -146,4 +148,19 @@ def sonarSummaries() {
 	    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample1
 	    """
 	}
+*/
+    withSonarQubeEnv('sonarcloud.io') {  // Use the SonarQube server configured in Jenkins
+	withCredentials([string(credentialsId: 'SONAR_LOGIN', variable: 'SONAR_LOGIN'),
+			 string(credentialsId: 'SONAR_PROJECT_KEY', variable: 'SONAR_PROJECT_KEY'),
+			 string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+	    sh '''
+		mvn clean verify sonar:sonar \
+		-Dsonar.host.url=$SONARQUBE_URL \
+		-Dsonar.login=$SONAR_LOGIN \
+	    	-Dsonar.organization=pramaraju96 \
+		-Dsonar.projectKey=$SONAR_PROJECT_KEY \
+		-Dsonar.branch.name=${env.BRANCH_NAME}
+	    '''
+	}
+    }
 }
