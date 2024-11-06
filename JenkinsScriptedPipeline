@@ -208,8 +208,17 @@ def sonarSummaries() {
                             echo "GIT_BRANCH: ${env.GIT_BRANCH}"  // Print GIT_BRANCH
                             echo "BRANCH_NAME: ${env.BRANCH_NAME}"  // Print BRANCH_NAME
 
-                            // Explicitly capture branch name from Git, ignoring origin/
+                            // Explicitly capture branch name from Git, even in detached HEAD state
                             def gitBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+
+                            // Check if we're in a detached HEAD state (if gitBranch is "HEAD")
+                            if (gitBranch == "HEAD") {
+                                // Try to get the branch from the remotes
+                                gitBranch = sh(script: 'git branch -r --contains HEAD | head -n 1', returnStdout: true).trim()
+                                // Clean up the branch name (remove the "origin/" prefix)
+                                gitBranch = gitBranch.replaceFirst("^origin/", "")
+                            }
+
                             echo "Git Branch (using git rev-parse): $gitBranch"  // Debug the branch name from git directly
 
                             // Clean the branch name if necessary (remove origin/)
