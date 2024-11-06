@@ -149,6 +149,8 @@ def sonarSummaries() {
 	    """
 	}
 */
+
+/*
     withSonarQubeEnv('sonarcloud.io') {  // Use the SonarQube server configured in Jenkins
 	withCredentials([string(credentialsId: 'SONAR_LOGIN', variable: 'SONAR_LOGIN'),
 			 string(credentialsId: 'SONAR_PROJECT_KEY', variable: 'SONAR_PROJECT_KEY'),
@@ -167,5 +169,29 @@ def sonarSummaries() {
 	    '''
 	}
     }
+*/
 
+	withSonarQubeEnv('sonarcloud.io') {  // Use the SonarQube server configured in Jenkins
+		withCredentials([string(credentialsId: 'SONAR_LOGIN', variable: 'SONAR_LOGIN'),
+				 string(credentialsId: 'SONAR_PROJECT_KEY', variable: 'SONAR_PROJECT_KEY'),
+				 string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+		    
+		    // Debug the environment variables
+		    echo "GIT_BRANCH: ${env.GIT_BRANCH}"  // Print GIT_BRANCH
+		    echo "BRANCH_NAME: ${env.BRANCH_NAME}"  // Print BRANCH_NAME
+		
+		    // Explicitly set BRANCH_NAME if it's not available
+		    def branchName = env.BRANCH_NAME ?: env.GIT_BRANCH ?: 'unknown'
+		    echo "Branch Name used: $branchName"  // Print the branch name to be used
+		
+		    sh '''#!/bin/bash
+			mvn clean verify sonar:sonar \
+			-Dsonar.host.url=$SONARQUBE_URL \
+			-Dsonar.login=$SONAR_LOGIN \
+			-Dsonar.organization=pramaraju96 \
+			-Dsonar.projectKey=$SONAR_PROJECT_KEY \
+			-Dsonar.branch.name=$branchName  # Use the branchName variable explicitly
+		    '''
+		}
+	}
 }
