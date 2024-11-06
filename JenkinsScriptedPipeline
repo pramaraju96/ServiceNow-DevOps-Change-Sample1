@@ -159,7 +159,7 @@ def sonarSummaries() {
 		-Dsonar.login=$SONAR_LOGIN \
 	    	-Dsonar.organization=pramaraju96 \
 		-Dsonar.projectKey=$SONAR_PROJECT_KEY \
-		-Dsonar.branch.name=${env.BRANCH_NAME}
+		-Dsonar.branch.name=$BRANCH_NAME
 	    '''
 	}
     }
