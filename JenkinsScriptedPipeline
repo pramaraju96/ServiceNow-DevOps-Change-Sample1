@@ -55,7 +55,7 @@ pipeline {
 				    }
 				],
 				"branchName": "main"
-				}""", "configurationName" :"DevOps-dcvtrueup500a.service-now.com-1730780602679")
+				}""", "configurationName" :"DevOps-checkmarx03.service-now.com-1730956330992")
 			}     
 		}
 
@@ -71,7 +71,7 @@ pipeline {
 			steps {
 				echo "${env.VERACODE_APPLICATION_NAME}"
 				echo "${VERACODE_APPLICATION_NAME}"
-				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}', "configurationName" :"DevOps-dcvtrueup500a.service-now.com-1730780602679")
+				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}', "configurationName" :"DevOps-checkmarx03.service-now.com-1730956330992")
 			}
 		}
 /*
@@ -97,7 +97,7 @@ pipeline {
 				        }
 				    ],
 				    "branchName": "main"
-				}""", "configurationName" :"DevOps-dcvtrueup500a.service-now.com-1730780602679")
+				}""", "configurationName" :"DevOps-checkmarx03.service-now.com-1730956330992")
 			}
 		}
 
@@ -124,7 +124,7 @@ pipeline {
 					"start_date": "", //This is the planned start date.
 					"end_date": "" // This is the planned end date.
 				}
-			    }''', "configurationName" :"DevOps-dcvtrueup500a.service-now.com-1730780602679")
+			    }''', "configurationName" :"DevOps-checkmarx03.service-now.com-1730956330992")
 			}
 		}
 
