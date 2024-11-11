@@ -81,6 +81,8 @@ jobs:
                   # composer install
                   # npm install
                   # npm run production
+                  # docker build --platform linux/amd64 -t ramarajupolanki122/sndevops:5.1.0-SNAPSHOT .
+                  docker run --platform linux/amd64 ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
                   sndevopscli create securityScan -p "{ \"pipelineInfo\": {  \"runId\": \"${{ github.run_id }}\",   \"runNumber\": \"${{ github.run_number }}\", \"runAttempt\": \"${{ github.run_attempt }}\",   \"job\": \"ServiceNowDevOpsSecurityScanVeracode\",  \"workflow\": \"${{ github.workflow }}\",  \"repository\": \"${{github.repository}}\" }, \"securityResultAttributes\": { \"scanner\": \"Veracode\",    \"applicationName\": \"PetStoreAPI-Github\",\"buildVersion\": \"\",   \"securityToolId\": \"\"}}"
 
   # ServiceNowDevOpsChange:
