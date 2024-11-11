@@ -64,6 +64,7 @@ jobs:
           run: |
            sndevopscli create securityScan -p "{ \"pipelineInfo\": {  \"runId\": \"${{ github.run_id }}\",   \"runNumber\": \"${{ github.run_number }}\", \"runAttempt\": \"${{ github.run_attempt }}\",   \"job\": \"ServiceNowDevOpsSecurityScanCheckmarxSAST\",  \"workflow\": \"${{ github.workflow }}\",  \"repository\": \"${{github.repository}}\" }, \"securityResultAttributes\": { \"scanner\": \"Checkmarx SAST\",    \"projectId\": \"3285\",   \"securityToolId\": \"\"}}"
 
+
   # ServiceNowDevOpsChange:
   #    runs-on: ubuntu-latest
   #    needs: build
