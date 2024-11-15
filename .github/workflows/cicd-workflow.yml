@@ -51,6 +51,7 @@ jobs:
     # You may pin to the exact commit or the version.
       uses: ServiceNow/servicenow-devops-test-report@v4.1.0
       with:
+          node-version: '20'
           # Devops Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
           # ServiceNow Instance Name
