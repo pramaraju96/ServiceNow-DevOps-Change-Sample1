@@ -5,7 +5,6 @@ def version = "1.${BUILD_NUMBER}"
 def semanticVersion = "1.${BUILD_NUMBER}.0"
 def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample1" // Ensure after forking update the repoName accrodingly.
 
-
 pipeline {
 	agent any
 	
