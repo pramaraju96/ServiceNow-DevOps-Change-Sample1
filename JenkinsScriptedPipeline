@@ -1,4 +1,3 @@
-
 def packageName = "app-devops-package-cicd.war"
 def artifactname = "app-devops-artifact-cicd.jar"
 def version = "1.${BUILD_NUMBER}"
