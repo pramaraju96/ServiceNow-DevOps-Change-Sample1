@@ -55,7 +55,7 @@ pipeline {
 				    }
 				],
 				"branchName": "main"
-				}""", "configurationName" :"DevOps-checkmarx05.service-now.com-1730975105915")
+				}""", "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
 			}     
 		}
 
@@ -71,7 +71,7 @@ pipeline {
 			steps {
 				echo "${env.VERACODE_APPLICATION_NAME}"
 				echo "${VERACODE_APPLICATION_NAME}"
-				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}', "configurationName" :"DevOps-checkmarx05.service-now.com-1730975105915")
+				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}', "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
 			}
 		}
 /*
@@ -97,7 +97,7 @@ pipeline {
 				        }
 				    ],
 				    "branchName": "main"
-				}""", "configurationName" :"DevOps-checkmarx05.service-now.com-1730975105915")
+				}""", "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
 			}
 		}
 
@@ -124,7 +124,7 @@ pipeline {
 					"start_date": "", //This is the planned start date.
 					"end_date": "" // This is the planned end date.
 				}
-			    }''', "configurationName" :"DevOps-checkmarx05.service-now.com-1730975105915")
+			    }''', "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
 			}
 		}
 
