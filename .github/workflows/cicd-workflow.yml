@@ -9,8 +9,8 @@ on: workflow_dispatch
 #     branches: [ "main" ]
 #     types: [opened, synchronize, reopened]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+# env:
+#   FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
 
 jobs:
   build:
@@ -49,7 +49,7 @@ jobs:
         node-version: '20'
     - name: ServiceNow DevOps Unit Test Results
     # You may pin to the exact commit or the version.
-      uses: ServiceNow/servicenow-devops-test-report@v4.1.0
+      uses: ServiceNow/servicenow-devops-test-report@scratch/node20update
       with:
           node-version: '20'
           # Devops Integration Token
@@ -77,7 +77,7 @@ jobs:
         node-version: '20'    
     - name: ServiceNow DevOps Register Artifact
     # You may pin to the exact commit or the version.          
-      uses: ServiceNow/servicenow-devops-register-artifact@v3.1.0
+      uses: ServiceNow/servicenow-devops-register-artifact@scratch/node20update
       with:
           # Devops Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
@@ -110,7 +110,7 @@ jobs:
         node-version: '20'    
     - name: ServiceNow DevOps Sonar Scan Results
     # You may pin to the exact commit or the version.     
-      uses: ServiceNow/servicenow-devops-sonar@v3.1.0
+      uses: ServiceNow/servicenow-devops-sonar@scratch/node20update
       with:
           # ServiceNow Instance URL
           instance-url: ${{ secrets.SN_INSTANCE_URL }}
@@ -139,7 +139,7 @@ jobs:
     - name: ServiceNow DevOps Security Results
     # You may pin to the exact commit or the version.
     # uses: ServiceNow/servicenow-devops-security-result@26f3416768ffd3991f1a14c0304ba03075724929
-      uses: ServiceNow/servicenow-devops-security-result@v3.1.0
+      uses: ServiceNow/servicenow-devops-security-result@scratch/node20update
       with:
         # ServiceNow Instance URL
         instance-url: ${{ secrets.SN_INSTANCE_URL }}
@@ -169,7 +169,7 @@ jobs:
         node-version: '20'
     - name: ServiceNow DevOps Register Package
     # You may pin to the exact commit or the version.           
-      uses: ServiceNow/servicenow-devops-register-package@v3.1.0
+      uses: ServiceNow/servicenow-devops-register-package@scratch/node20update
       with:
           # Devops Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
@@ -209,7 +209,7 @@ jobs:
           node-version: '20'
       - name: ServiceNow Change
         id: create_change
-        uses: ServiceNow/servicenow-devops-change@v4.1.0
+        uses: ServiceNow/servicenow-devops-change@scratch/node20update
         with:
           # Devops Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
@@ -255,7 +255,7 @@ jobs:
         id: getchange
         # You may pin to the exact commit or the version.
         # uses: ServiceNow/servicenow-devops-get-change@38d27ed6413d88e7b7fa9a7db248a2caaaf09596
-        uses: ServiceNow/servicenow-devops-get-change@v4.1.0
+        uses: ServiceNow/servicenow-devops-get-change@scratch/node20update
         with:
           # ServiceNow Instance URL
           instance-url: ${{ secrets.SN_INSTANCE_URL }}
@@ -291,7 +291,7 @@ jobs:
       - name: ServiceNow DevOps Update Change
         # You may pin to the exact commit or the version.
         # uses: ServiceNow/servicenow-devops-update-change@66d51cb13684d8287a763bc3f4dc4531c6ab3306
-        uses: ServiceNow/servicenow-devops-update-change@v3.1.0
+        uses: ServiceNow/servicenow-devops-update-change@scratch/node20update
         id: updatechange
         with:
           # ServiceNow Instance URL
