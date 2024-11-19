@@ -50,7 +50,7 @@ jobs:
       steps:
         - name: security scan checkmarx one
           run: |
-           sndevopscli create securityScan -p "{ \"pipelineInfo\": {  \"runId\": \"${{ github.run_id }}\",   \"runNumber\": \"${{ github.run_number }}\", \"runAttempt\": \"${{ github.run_attempt }}\",   \"job\": \"ServiceNowDevOpsSecurityScanCheckmarxOne\",  \"workflow\": \"${{ github.workflow }}\",  \"repository\": \"${{github.repository}}\" }, \"securityResultAttributes\": { \"scanner\": \"Checkmarx One\",    \"projectId\": \"880a8a8e-8627-48b5-9293-4f33a59f0f9c\",\"scanId\": \"4af9fb33-0a62-4e5e-ae9c-bf2ecc93ad50\",   \"securityToolId\": \"\"}}"
+           sndevopscli create securityScan -p "{ \"pipelineInfo\": {  \"runId\": \"${{ github.run_id }}\",   \"runNumber\": \"${{ github.run_number }}\", \"runAttempt\": \"${{ github.run_attempt }}\",   \"job\": \"ServiceNowDevOpsSecurityScanCheckmarxOne\",  \"workflow\": \"${{ github.workflow }}\",  \"repository\": \"${{github.repository}}\" }, \"securityResultAttributes\": { \"scanner\": \"Checkmarx One\",    \"projectId\": \"880a8a8e-8627-48b5-9293-4f33a59f0f9c\",\"scanId\": \"\",   \"securityToolId\": \"\"}}"
 
   ServiceNowDevOpsSecurityScanCheckmarxSAST:
       name: ServiceNowDevOpsSecurityScanCheckmarxSAST
