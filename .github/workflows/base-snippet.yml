@@ -1,0 +1,46 @@
+name: ServiceNow baseline snippet
+
+on: workflow_dispatch
+# on:
+#     push:
+#       branches: [ "main" ]
+#     pull_request:
+#       branches: [ "main" ]
+#       types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    name: 'Build'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn clean compile
+
+  ServiceNowDevOpsChange:
+      # jobs that must complete successfully before this job will run
+      needs: build
+      # type of machine to run the job on
+      runs-on: ubuntu-latest
+      name: 'ServiceNow DevOps Change'
+      steps:
+        - name: ServiceNow Change
+          # Ensure to update to the latest version of the custom action, for e.g. ServiceNow/servicenow-devops-change@v5.1.0
+          uses: ServiceNow/servicenow-devops-change@scratch/node20update
+          with:
+            # Devops Integration Token
+            devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+            # ServiceNow Instance URL
+            instance-url: ${{ secrets.SN_INSTANCE_URL }}
+            # Orchestration Tool Id
+            tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+            # GitHub Context
+            context-github: ${{ toJSON(github) }}
+            # Display Name of the Job
+            job-name: 'ServiceNow DevOps Change'      
