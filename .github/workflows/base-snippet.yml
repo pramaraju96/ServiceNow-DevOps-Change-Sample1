@@ -44,5 +44,5 @@ jobs:
             context-github: ${{ toJSON(github) }}
             # Display Name of the Job
             job-name: 'ServiceNow DevOps Change'
-             # change-request: snDevOpsChange
-            change-request: '{}'
+            #  # change-request: snDevOpsChange
+            # change-request: '{}'
