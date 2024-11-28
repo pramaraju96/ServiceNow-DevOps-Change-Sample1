@@ -288,7 +288,7 @@ jobs:
       #   with:
       #     node-version: '20'
       - name: Using ServiceNow DevOps Change
-        run: echo 'Using ServiceNow DevOps Change -> ${{ needs.getchange.outputs.change-request-number }}'  >> $GITHUB_OUTPUT
+        run: echo 'Using ServiceNow DevOps Change -> ${{ needs.getchange.outputs.changeRequestNumber }}'  >> $GITHUB_OUTPUT
         
       - name: ServiceNow DevOps Update Change
         # You may pin to the exact commit or the version.
@@ -307,7 +307,7 @@ jobs:
           # Github Context
           context-github: ${{ toJSON(github) }}
           # Change Request Number to be Updated
-          change-request-number: ${{needs.getchange.outputs.change-request-number}}
+          change-request-number: ${{needs.getchange.outputs.changeRequestNumber}}
           # The customized inputs to create change with the requested details.
           change-request-details: '{"state":"3","close_code":"successful_issues","close_notes":"Test results successful"}'
           
