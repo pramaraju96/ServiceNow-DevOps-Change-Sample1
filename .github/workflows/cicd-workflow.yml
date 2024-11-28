@@ -307,10 +307,11 @@ jobs:
           # Change Request Number to be Updated
           change-request-number: ${{needs.getchange.outputs.changeRequestNumber}}
           # The customized inputs to create change with the requested details.
-          change-request-details: '{"state":"3","close_code":"successful_issues","close_notes":"Test results successful"}'
+          # change-request-details: '{"state":"3","close_code":"successful_issues","close_notes":"Test results successful"}'
+          change-request-details: '{"short_description":"update successful"}'
           
-      - name: Outcome of ServiceNow DevOps Update Change
-        run: echo 'Outcome of ServiceNow DevOps Update Change is -> ${{ steps.updatechange.outputs.status }}'  >> $GITHUB_OUTPUT
+      # - name: Outcome of ServiceNow DevOps Update Change
+      #   run: echo 'Outcome of ServiceNow DevOps Update Change is -> ${{ steps.updatechange.outputs.status }}'  >> $GITHUB_OUTPUT
 
   deploy:
     name: 'Deploy'
