@@ -41,6 +41,7 @@ jobs:
             # Orchestration Tool Id
             tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
             # GitHub Context
+            change-request: '{}'
             context-github: ${{ toJSON(github) }}
             # Display Name of the Job
             job-name: 'ServiceNow DevOps Change'
