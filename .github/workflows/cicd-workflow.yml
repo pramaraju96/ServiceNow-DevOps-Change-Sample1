@@ -287,8 +287,6 @@ jobs:
       #   uses: actions/setup-node@v3
       #   with:
       #     node-version: '20'
-      # - name: Using ServiceNow DevOps Change
-      #   run: echo 'Using ServiceNow DevOps Change -> ${{ needs.getchange.outputs.changeRequestNumber }}'  >> $GITHUB_OUTPUT
         
       - name: ServiceNow DevOps Update Change
         # You may pin to the exact commit or the version.
