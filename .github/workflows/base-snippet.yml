@@ -22,7 +22,6 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean compile
-
   ServiceNowDevOpsChange:
       # jobs that must complete successfully before this job will run
       needs: build
@@ -32,7 +31,7 @@ jobs:
       steps:
         - name: ServiceNow Change
           # Ensure to update to the latest version of the custom action, for e.g. ServiceNow/servicenow-devops-change@v5.1.0
-          uses: ServiceNow/servicenow-devops-change@scratch/node20update
+          uses: ServiceNow/servicenow-devops-change@dev
           with:
             # Devops Integration Token
             devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
@@ -41,7 +40,6 @@ jobs:
             # Orchestration Tool Id
             tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
             # GitHub Context
-            change-request: '{}'
             context-github: ${{ toJSON(github) }}
             # Display Name of the Job
             job-name: 'ServiceNow DevOps Change'
