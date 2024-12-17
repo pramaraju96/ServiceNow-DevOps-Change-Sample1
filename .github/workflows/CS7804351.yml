@@ -1,0 +1,57 @@
+# https://github.com/rapdev-io/jon-test-open/blob/main/.github/workflows/build.yaml
+
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+run-name: ${{ github.event.inputs.name }}
+jobs:
+  build1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: echo Hello, world!
+        
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+  build:
+    name: duplicate-job-name
+    if: ${{inputs.test == 'test'}}
+    runs-on: ubuntu-latest
+    needs: build1
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: echo Hello, world!
+        
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+          
+  test:
+    name: duplicate-job-name
+    if: ${{inputs.test == 'test'}}
+    needs: build 
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+  test2:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: exit 1
