@@ -36,7 +36,7 @@ jobs:
      runs-on: ubuntu-latest
      needs: build
      container:
-       image: ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
+       image: ramarajupolanki122/sndevops:dev
      env:
        CI_JOB_NAME: "ServiceNowDevOpsChange"
      steps:
@@ -48,7 +48,7 @@ jobs:
        runs-on: ubuntu-latest
        needs: ServiceNowDevOpsChange
        container:
-         image: ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
+         image: ramarajupolanki122/sndevops:dev
        env:
          CI_JOB_NAME: "ServiceNowDevOpsChange"
        steps:
@@ -60,7 +60,7 @@ jobs:
       runs-on: ubuntu-latest
       needs: build
       container:
-        image: ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
+        image: ramarajupolanki122/sndevops:dev
       env:
         CI_JOB_NAME: "ArtifactAndPackage"
       steps:
@@ -74,7 +74,7 @@ jobs:
       needs: ArtifactAndPackage
       runs-on: ubuntu-latest
       container:
-        image: ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
+        image: ramarajupolanki122/sndevops:dev
       env:
         CI_JOB_NAME: "ServiceNowDevOpsSonarScanResults"
       steps:
@@ -87,7 +87,7 @@ jobs:
       runs-on: ubuntu-latest
       needs: build
       container:
-        image: ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
+        image: ramarajupolanki122/sndevops:dev
       steps:
         - name: security scan veracode
           run: |
@@ -98,7 +98,7 @@ jobs:
   #     runs-on: ubuntu-latest
   #     needs: build
   #     container:
-  #       image: ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
+  #       image: ramarajupolanki122/sndevops:dev
   #     steps:
   #       - name: security scan checkmarx one
   #         run: |
@@ -109,7 +109,7 @@ jobs:
   #     runs-on: ubuntu-latest
   #     needs: build
   #     container:
-  #       image: ramarajupolanki122/sndevops:5.1.0-SNAPSHOT
+  #       image: ramarajupolanki122/sndevops:dev
   #     steps:
   #       - name: security scan checkmarx sast
   #         run: |
