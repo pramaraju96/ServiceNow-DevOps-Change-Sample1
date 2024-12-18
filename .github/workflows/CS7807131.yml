@@ -1,6 +1,6 @@
 # https://github.com/rapdev-io/jon-test-open/blob/main/.github/workflows/build.yaml
 
-name: Build
+name: Build new
 
 on:
   # push:
