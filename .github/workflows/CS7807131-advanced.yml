@@ -43,7 +43,7 @@ jobs:
       - name: Step 1 in Job 4 - Waiting for 30 seconds
         run: |
           echo "Waiting for 30 seconds..." #&& sleep 60
-          exit 1
+          # exit 1
       # - name: Step 2 in Job 4 - Always Fail
       #   run: |
       #     echo "This job is forced to fail."
@@ -124,4 +124,4 @@ jobs:
       - name: Step 1 in Job 12
         run: |
           echo "Running Job 12 after job11"
-          exit 1
+          # exit 1
