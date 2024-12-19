@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 in Job 1
-        run: echo "Running Job 1"
+        run: "Waiting for 60 seconds..." #&& sleep 60
 
   # Parallel Skipped Jobs
   job2:
