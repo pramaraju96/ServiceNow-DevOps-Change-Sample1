@@ -13,7 +13,7 @@ jobs:
       - name: Step 1 in Job 1
         run: |
           echo "Waiting for 60 seconds..."
-          sleep 60
+          # sleep 60
 
   # Parallel Skipped Jobs
   job2:
@@ -124,4 +124,4 @@ jobs:
       - name: Step 1 in Job 12
         run: |
           echo "Running Job 12 after job11"
-          
+          exit 1
