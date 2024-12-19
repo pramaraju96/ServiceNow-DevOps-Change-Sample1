@@ -2,7 +2,7 @@ name: Skipped Jobs Workflow
 
 on:
   push:
-    branches: ['main']
+    branches: ['master']
   workflow_dispatch:
 
 jobs:
@@ -39,7 +39,9 @@ jobs:
     if: ${{ always() }}  # Ensures that job4 runs no matter what happens with job2 and job3
     steps:
       - name: Step 1 in Job 4 - Waiting for 30 seconds
-        run: echo "Waiting for 30 seconds..." #&& sleep 60
+        run: |
+          echo "Waiting for 30 seconds..." #&& sleep 60
+          exit 1
       # - name: Step 2 in Job 4 - Always Fail
       #   run: |
       #     echo "This job is forced to fail."
