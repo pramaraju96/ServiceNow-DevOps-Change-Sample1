@@ -118,4 +118,6 @@ jobs:
     if: ${{ always() }}  # Ensures that job12 runs no matter what happens with job11
     steps:
       - name: Step 1 in Job 12
-        run: echo "Running Job 12 after job11"
+        run: |
+          echo "Running Job 12 after job11"
+          exit 1
