@@ -79,7 +79,7 @@ jobs:
       steps:
         - name: devops soanr results
           run: |
-            sndevopscli create sonar -url 'https://sonarcloud.io' -projectKey 'pramaraju96_ServiceNow-DevOps-Change-Sample1'
+            sndevopscli create sonar -url 'https://sonarcloud.io' -projectKey 'pramaraju96_ServiceNow-DevOps-Change-Sample1' -branch 'preprod'
 
   ServiceNowDevOpsSecurityScanVeracode:
       name: ServiceNowDevOpsSecurityScanVeracode
@@ -90,7 +90,7 @@ jobs:
       steps:
         - name: security scan veracode
           run: |
-           sndevopscli create securityScan -p "{ \"pipelineInfo\": {  \"runId\": \"${{ github.run_id }}\",   \"runNumber\": \"${{ github.run_number }}\", \"runAttempt\": \"${{ github.run_attempt }}\",   \"job\": \"ServiceNowDevOpsSecurityScanVeracode\",  \"workflow\": \"${{ github.workflow }}\",  \"repository\": \"${{github.repository}}\" }, \"securityResultAttributes\": { \"scanner\": \"Veracode\",    \"applicationName\": \"PetStoreAPI-Github\",\"buildVersion\": \"\",   \"securityToolId\": \"\"}}"
+           sndevopscli create securityScan -p "{ \"pipelineInfo\": {  \"runId\": \"${{ github.run_id }}\",   \"runNumber\": \"${{ github.run_number }}\", \"runAttempt\": \"${{ github.run_attempt }}\",   \"job\": \"ServiceNowDevOpsSecurityScanVeracode\",  \"workflow\": \"${{ github.workflow }}\",  \"repository\": \"${{github.repository}}\" }, \"securityResultAttributes\": { \"scanner\": \"Veracode\",    \"applicationName\": \"PetStoreAPI-Github\",\"buildVersion\": \"\",   \"securityToolId\": \"incorrect\"}}"
 
   # ServiceNowDevOpsSecurityScanCheckmarxOne:
   #     name: ServiceNowDevOpsSecurityScanCheckmarxOne
