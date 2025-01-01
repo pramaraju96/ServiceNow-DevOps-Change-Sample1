@@ -33,7 +33,7 @@ jobs:
 
   ServiceNowDevOpsChange:
      runs-on: ubuntu-latest
-     needs: build
+     needs: [ServiceNowDevOpsSonarScanResults, ServiceNowDevOpsSecurityScanVeracode]
      container:
        image: ramarajupolanki122/sndevops:dev
      env:
@@ -84,7 +84,7 @@ jobs:
   ServiceNowDevOpsSecurityScanVeracode:
       name: ServiceNowDevOpsSecurityScanVeracode
       runs-on: ubuntu-latest
-      needs: build
+      needs: ArtifactAndPackage
       container:
         image: ramarajupolanki122/sndevops:dev
       steps:
