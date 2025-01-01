@@ -153,7 +153,7 @@ jobs:
         # Display Name of the Job
         job-name: 'Veracode Scan Summary'
         # Security Results Attributes: For more information on defining the security attributes, View full Marketplace listing link above
-        security-result-attributes: '{ "scanner": "Veracode", "applicationName": "10kflaws-72", "securityToolId": "" }'
+        security-result-attributes: '{ "scanner": "Veracode", "applicationName": "PetStoreAPI-Github", "securityToolId": "" }'
         # Orchestration Tool Id
         tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
 
