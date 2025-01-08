@@ -76,13 +76,13 @@ pipeline {
 
 		stage('Security Scan - Checkmarx SAST') {
 			steps {
-				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}')
+				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}', "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271")
 			}
 		}
 
 		stage('Security Scan - Checkmarx One') {
 			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx One", "projectName": "pramaraju96/devops-test-repo", "projectId": "", "scanId": "", "securityToolId": ""}'
+				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx One", "projectName": "pramaraju96/devops-test-repo", "projectId": "", "scanId": "", "securityToolId": ""}', "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271"
 				// scanner: Scanning tool and is required e.g. Checkmarx One.
 				// projectName/projectId: Name/Id of your Checkmarx One project and is required. This attribute is applicable only for Checkmarx One.
 				// scanId: Checkmarx One scan id and is optional. This attribute is applicable only for Checkmarx One.
