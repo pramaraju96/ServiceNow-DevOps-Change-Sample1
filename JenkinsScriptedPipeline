@@ -76,7 +76,7 @@ pipeline {
 
 		stage('Security Scan - Checkmarx SAST') {
 			steps {
-				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}', "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271")
+				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": ""}', "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271")
 			}
 		}
 
