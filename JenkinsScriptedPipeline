@@ -54,7 +54,7 @@ pipeline {
 				    }
 				],
 				"branchName": "main"
-				}""", "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
+				}""", "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271")
 			}     
 		}
 
@@ -70,16 +70,26 @@ pipeline {
 			steps {
 				echo "${env.VERACODE_APPLICATION_NAME}"
 				echo "${VERACODE_APPLICATION_NAME}"
-				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}', "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
+				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Veracode", "applicationName": "PetStoreAPI-Github"}', "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271")
 			}
 		}
-/*
+
 		stage('Security Scan - Checkmarx SAST') {
 			steps {
 				snDevOpsSecurityResult(securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "1ce069af47d9061056978bb4236d43df"}')
 			}
 		}
-*/
+
+		stage('Security Scan - Checkmarx One') {
+			steps {
+				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx One", "projectName": "pramaraju96/devops-test-repo", "projectId": "", "scanId": "", "securityToolId": ""}'
+				// scanner: Scanning tool and is required e.g. Checkmarx One.
+				// projectName/projectId: Name/Id of your Checkmarx One project and is required. This attribute is applicable only for Checkmarx One.
+				// scanId: Checkmarx One scan id and is optional. This attribute is applicable only for Checkmarx One.
+				// securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
+			}
+		}
+
 		stage('Register Package') {
 			steps {
 				snDevOpsPackage(
@@ -96,7 +106,7 @@ pipeline {
 				        }
 				    ],
 				    "branchName": "main"
-				}""", "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
+				}""", "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271")
 			}
 		}
 
@@ -123,7 +133,7 @@ pipeline {
 					"start_date": "", //This is the planned start date.
 					"end_date": "" // This is the planned end date.
 				}
-			    }''', "configurationName" :"DevOps-devopseu03.service-now.com-1731907626584")
+			    }''', "configurationName" :"DevOps-checkmarx05.service-now.com-1736244818271")
 			}
 		}
 
